@@ -21,6 +21,7 @@
 		      <input type="text" name="user_id" placeholder="ID"/>
 		      <input type="password" name="user_password" placeholder="Password"/>
 		      <input class="submit_button" type="submit" value="LOGIN"/>
+		      <p class="login_fail_message">
 		      <p class="message">Not registered? <a href="#">Create an account</a></p>
 		    </form>
 		  </div>

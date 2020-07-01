@@ -24,6 +24,9 @@
 	<context:component-scan base-package="Bulletin.Board.Controller" />
 	
 	<!-- Service -->
+	<beans:bean id="UserService" class="Bulletin.Board.Service.UserServiceImpl" />
+	
 	<!-- DAO -->
+	<beans:bean id="UserDAO" class="Bulletin.Board.DAO.UserDAO" />
 	
 </beans:beans>
