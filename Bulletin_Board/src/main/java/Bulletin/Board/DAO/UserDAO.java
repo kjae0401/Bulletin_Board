@@ -13,4 +13,22 @@ public class UserDAO extends AbstractDAO {
 		return result;
 	}
 
+	public int signup_page_idcheck(String query_data) {
+		// TODO Auto-generated method stub
+		return (Integer) selectOne("User.signup_page_idcheck_query", query_data);
+	}
+
+	public boolean signup(HashMap<String, String> input_data) {
+		// TODO Auto-generated method stub
+		boolean result = false;
+		try {
+			selectOne("User.signup", input_data);
+			result = true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			result = false;
+		}
+		
+		return result;
+	}
 }

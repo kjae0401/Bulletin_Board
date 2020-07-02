@@ -6,4 +6,16 @@
 			SELECT EXISTS (SELECT * FROM bulletin_board_user WHERE user_id=#{user_id} and user_password= #{user_password}) AS Result;
 		]]>
 	</select>
+	
+	<select id="signup_page_idcheck_query" parameterType="String" resultType="integer">
+		<![CDATA[
+			SELECT EXISTS (SELECT * FROM bulletin_board_user WHERE user_id=#{query_data}) AS Result
+		]]>
+	</select>
+	
+	<select id="signup" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO bulletin_board_user VALUE(#{signup_id}, #{signup_password}, #{signup_email})
+		]]>
+	</select>
 </mapper>

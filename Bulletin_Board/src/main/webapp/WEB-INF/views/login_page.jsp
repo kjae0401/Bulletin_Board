@@ -13,18 +13,27 @@
 		<!-- custom css -->
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/login_page.css">
 		
+		<script>
+			var signup_result_message = "${signup_result_message}"
+			
+			if (signup_result_message == 'signup_success')
+				alert('회원 가입에 성공하였습니다. 입력한 이메일로 인증 메일이 발송됩니다.')
+			else if (signup_result_message == 'signup_fail')
+				alert('회원 가입에 실패하였습니다. 다시 시도해주세요.')
+		</script>
+		
 		<title>Log-In</title>
 	</head>
 	
 	<body>
 		<div class="login-page">
 		  <div class="form">
-		    <form class="login-form" method="post" action="login_page_action.do" onsubmit="return input_value_check()">
+		    <form class="login-form" method="post" action="login_page_action.do" onsubmit="return login_input_value_check()">
 		      <input type="text" name="user_id" placeholder="ID"/>
 		      <input type="password" name="user_password" placeholder="Password"/>
 		      <input class="submit_button" type="submit" value="LOGIN"/>
 		      <p class="login_fail_message">
-		      <p class="message">Not registered? <a href="#">Create an account</a></p>
+		      <p class="message">Not registered? <a href="signup_page.do">Create an account</a></p>
 		    </form>
 		  </div>
 		</div>
@@ -37,21 +46,20 @@
 	    		$('.login_fail_message').text('가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.')
 	    </script>
 	    <script>
-	    	function input_value_check() {
+	    	function login_input_value_check() {
 	    		if ($('input[name=user_id]').val() == "") {
 	    			$('.login_fail_message').text('아이디를 입력해주세요.')
 	    			$('input[name=user_id]').focus()
 	    			return false
-	    		} else {
-	    			if ($('input[name=user_password]').val() == "") {
-	    				$('.login_fail_message').text('비밀번호를 입력해주세요.')
-	    				$('input[name=user_password]').focus()
-	    				return false
-	    			}
+	    		}
+	    		if ($('input[name=user_password]').val() == "") {
+	    			$('.login_fail_message').text('비밀번호를 입력해주세요.')
+	    			$('input[name=user_password]').focus()
+	    			return false
 	    		}
 	    		
 	    		return true
-	    	} 
+	    	}
 	    </script>
 	</body>
 </html>

@@ -6,3 +6,6 @@ CREATE TABLE `jsp`.`bulletin_board_user` (
 
 login SQL
 SELECT EXISTS (SELECT * FROM bulletin_board_user WHERE user_id=#{user_id} and user_password=#{user_password}) AS Result;
+
+signup SQL
+INSERT INTO bulletin_board_user VALUE(#{signup_id}, #{signup_password}, #{signup_email});

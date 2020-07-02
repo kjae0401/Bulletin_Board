@@ -16,4 +16,14 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userDAO.login(input_data);
 	}
+
+	public int signup_page_idcheck(String query_data) {
+		// TODO Auto-generated method stub
+		return userDAO.signup_page_idcheck(query_data);
+	}
+
+	public boolean signup(HashMap<String, String> input_data) {
+		// TODO Auto-generated method stub
+		return userDAO.signup(input_data);
+	}
 }
