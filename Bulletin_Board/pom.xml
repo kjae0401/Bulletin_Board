@@ -38,7 +38,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.31</version>
+			<version>8.0.16</version>
 		</dependency>
 		
 		<!-- 파일 경로에 한글 파일명이 포함되어있을 때 사용. -->
