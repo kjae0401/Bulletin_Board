@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import Bulletin.Board.Service.UserServiceImpl;
+import Bulletin.Board.Util.SHA256;
 
 /**
  * Handles requests for the application home page.
@@ -66,9 +67,9 @@ public class maincontroller {
 		
 		HashMap<String, String> input_data = new HashMap<String, String>();
 		input_data.put("user_id", user_id);
-		input_data.put("user_password", user_password);
+		input_data.put("user_password", SHA256.encrypt(user_password));
 		boolean result = (boolean) userServiceImpl.login(input_data);
-
+		
 		if (result) {
 			request.getSession().setAttribute("user_id", user_id);
 			mv = new ModelAndView("redirect:homepage.do");
@@ -102,7 +103,7 @@ public class maincontroller {
 		
 		HashMap<String, String> input_data = new HashMap<String, String>();
 		input_data.put("signup_id", signup_id);
-		input_data.put("signup_password", signup_password);
+		input_data.put("signup_password", SHA256.encrypt(signup_password));
 		input_data.put("signup_email", signup_email);
 		boolean result = (boolean) userServiceImpl.signup(input_data);
 		
