@@ -1,0 +1,47 @@
+table {
+	margin-top: 100px;
+}
+
+caption {
+	font-size: 30px;
+	text-align: center;
+}
+
+th {
+	text-align: center;
+	font-size: 0.8em;
+	margin-bottom: 30px;
+}
+
+td {
+	text-align: center;
+	font-size: 0.8em;
+}
+
+.text-cllipsis {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+	white-space: nowrap;
+}
+
+.text-cllipsis>a {
+	display: table-cell;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: blue;
+	text-decoration: none;
+}
+
+a:hover {
+	color: lightblue;
+}
+
+.pagination {
+	display: block;
+	text-align: center;
+}
+
+.pagination > li > a {
+	float: none;
+}

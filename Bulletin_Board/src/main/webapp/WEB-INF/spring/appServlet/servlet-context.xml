@@ -25,8 +25,10 @@
 	
 	<!-- Service -->
 	<beans:bean id="UserService" class="Bulletin.Board.Service.UserServiceImpl" />
+	<beans:bean id="PostService" class="Bulletin.Board.Service.PostServiceImpl" />
 	
 	<!-- DAO -->
 	<beans:bean id="UserDAO" class="Bulletin.Board.DAO.UserDAO" />
+	<beans:bean id="PostDAO" class="Bulletin.Board.DAO.PostDAO" />
 	
 </beans:beans>

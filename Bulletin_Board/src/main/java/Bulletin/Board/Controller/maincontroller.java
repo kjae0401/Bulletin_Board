@@ -3,6 +3,7 @@ package Bulletin.Board.Controller;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import Bulletin.Board.Service.PostServiceImpl;
 import Bulletin.Board.Service.UserServiceImpl;
+import Bulletin.Board.Util.Pagination;
 import Bulletin.Board.Util.SHA256;
 
 /**
@@ -29,6 +32,8 @@ import Bulletin.Board.Util.SHA256;
 public class maincontroller {
 	@Autowired
 	private UserServiceImpl userServiceImpl;
+	@Autowired
+	private PostServiceImpl postServiceImpl;
 	private static final Logger logger = LoggerFactory.getLogger(maincontroller.class);
 	
 	/**
@@ -113,6 +118,35 @@ public class maincontroller {
 			redirectAttributes.addFlashAttribute("signup_result_message", "signup_fail");
 		}
 		mv = new ModelAndView("redirect:login_page.do");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/bulletin_board_main_page.do", method=RequestMethod.GET)
+	public ModelAndView bulletin_board_main_page(@RequestParam(required=false, value="nowPage") String nowPage, @RequestParam(required=false, value="countPerPage") String countPerPage) throws Exception {
+		ModelAndView mv = new ModelAndView("bulletin_board_main_page");
+		
+		// 전체 게시글 수를 dao로 부터 받아온다. <postDAO, postService 추가>
+		int post_count =  postServiceImpl.post_count();
+		
+		// countPerPage 개수 변경으로 한 페이지에 표시되는 게시글의 수를 조절할 수 있도록 만들 수 있다.
+		if (nowPage == null && countPerPage == null) {
+			nowPage = "1";
+			countPerPage = "10";
+		} else if (nowPage == null) {
+			nowPage = "1";
+		} else if (countPerPage == null) {
+			countPerPage = "10";
+		}
+		
+		Pagination pagination = new Bulletin.Board.Util.Pagination(post_count, Integer.parseInt(nowPage), Integer.parseInt(countPerPage));
+		HashMap<String, Integer> post_list_range = new HashMap<String, Integer>();
+		post_list_range.put("startIndex", (Integer.parseInt(nowPage)-1) * Integer.parseInt(countPerPage));
+		post_list_range.put("countPerPage", Integer.parseInt(countPerPage));
+		List<HashMap<String, String>> post_list_contents = postServiceImpl.post_list(post_list_range);
+		
+		mv.addObject("pagination", pagination);
+		mv.addObject("post_list_contents", post_list_contents);
 		
 		return mv;
 	}
