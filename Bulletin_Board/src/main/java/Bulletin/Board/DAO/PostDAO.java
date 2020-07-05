@@ -13,9 +13,17 @@ public class PostDAO extends AbstractDAO {
 		return (Integer) selectOne("Post.post_count");
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<HashMap<String, String>> post_list_contents(HashMap<String, Integer> post_list_count) {
+	public int post_count(String post_keyword) {
 		// TODO Auto-generated method stub
-		return selectList("Post.post_list_contents", post_list_count);
+		return (Integer) selectOne("Post.post_count_keyword", post_keyword);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<HashMap<String, String>> post_list_contents(HashMap<String, Object> post_list_contents) {
+		// TODO Auto-generated method stub
+		if (post_list_contents.get("post_keyword") == null)
+			return selectList("Post.post_list_contents", post_list_contents);
+		else
+			return selectList("Post.post_list_contents_keyword", post_list_contents);
 	}
 }

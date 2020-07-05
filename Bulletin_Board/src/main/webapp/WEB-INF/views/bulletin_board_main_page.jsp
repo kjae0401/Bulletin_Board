@@ -20,9 +20,46 @@
 		<title>Bulletin Board</title>
 	</head>
 	
-<body>
+	<body>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+		    	<!-- Brand and toggle get grouped for better mobile display -->
+		    	<div class="navbar-header">
+		      		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		        		<span class="sr-only">Toggle navigation</span>
+		        		<span class="icon-bar"></span>
+		        		<span class="icon-bar"></span>
+		       			<span class="icon-bar"></span>
+		      		</button>
+		      		<a class="navbar-brand" href="/Bulletin_Board/bulletin_board_main_page.do">Spring 게시판</a>
+		    	</div>
+		    	
+				<!-- Collect the nav links, forms, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			    	<ul class="nav navbar-nav">
+			        	<li class="active"><a href="#">게시판 <span class="sr-only">(current)</span></a></li>
+			        	<li><a href="#">Link</a></li>
+			      	</ul>
+	
+					<ul class="nav navbar-nav navbar-right">
+				        <li class="dropdown">
+				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+				        	<ul class="dropdown-menu" role="menu">
+				            	<li><a href="#">Action</a></li>
+				            	<li><a href="#">Another action</a></li>
+				            	<li><a href="#">Something else here</a></li>
+				            
+				            	<li class="divider"></li>
+				            	<li><a href="#">로그아웃</a></li>
+				          	</ul>
+						</li>
+					</ul>
+		    	</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+	
 		<table class="table table-striped">
-			<caption>게시판</caption>
+			<caption><a href="/Bulletin_Board/bulletin_board_main_page.do">게시판</a></caption>
 			
 			<colgroup>
 				<col width="10%">
@@ -53,29 +90,77 @@
 							<td>${post_list_contents.post_index }</td>
 							<td><div class="text-cllipsis"><a href="#">${post_list_contents.post_title }</a></div></td>
 							<td>${post_list_contents.post_writter_id }</td>
-							<td><fmt:formatDate value="${post_list_contents.post_time}" pattern="yyyy.mm.dd" /></td>
+							<td><fmt:formatDate value="${post_list_contents.post_time}" pattern="yyyy.MM.dd" /></td>
 							<td>${post_list_contents.post_view }</td>
 						</tr>
 					</c:if>
 				</c:forEach>
 			</tbody>
 		</table>
-
+		
+		<button type="button" class="btn btn-primary" onclick="location.href='/Bulletin_Board/bulletin_board_write_page.do'">글쓰기</button>
+		<br>
+		
 		<ul class="pagination">
 			<c:if test="${pagination.startPage != 1}">
-				<li><a href="/Bulletin_Board/bulletin_board_main_page.do?nowPage=${pagination.startPage - 1}&countPerPage=${pagination.countPerPage}">&laquo</a></li>
+				<li><a id="prevUrl" href="">&laquo</a></li>
 			</c:if>
 			
 			<c:forEach begin="${pagination.startPage}" end="${pagination.endPage}" var="idx">
 				<c:choose>
 					<c:when test="${idx == pagination.nowPage }"><li class="active"><a><b href="#">${idx }</b></a></li></c:when>
-					<c:when test="${idx != pagination.nowPage }"><li><a href="/Bulletin_Board/bulletin_board_main_page.do?nowPage=${idx}&countPerPage=${pagination.countPerPage}">${idx }</a></li></c:when>
+					<c:when test="${idx != pagination.nowPage }"><li><a class="indexUrl" href="" value=${idx}>${idx }</a></li></c:when>
 				</c:choose>
 			</c:forEach>	
 			
 			<c:if test="${pagination.endPage != pagination.lastPage }">
-				<li><a href="/Bulletin_Board/bulletin_board_main_page.do?nowPage=${pagination.endPage + 1}&countPerPage=${pagination.countPerPage}">&raquo</a></li>
+				<li><a id="nextUrl" href="">&raquo</a></li>
 			</c:if>
 		</ul>
+		
+		<form method="get" class="post_keyword_form" action="bulletin_board_main_page.do" onsubmit="return fn_keyword_search()">
+			<input type="text" class="post_keyword" name="post_keyword" placeholder="Search..."/>
+			<input type="submit" class="btn btn-primary" value="검색"/>
+		</form>
+		
+		<script>
+			var post_keyword = "${post_keyword}"
+
+			if (post_keyword != "")
+				$(".post_keyword").val(post_keyword)
+			
+			function fn_keyword_search() {
+				var post_keyword = $('.post_keyword').val()
+
+				if (post_keyword == "") {
+					return false
+				}
+				
+				return true
+			}
+			
+			$('#prevUrl').click(function() {
+				if (post_keyword == null)
+					$("a#prevUrl").attr("href", "/Bulletin_Board/bulletin_board_main_page.do?nowPage=${pagination.startPage - 1}&countPerPage=${pagination.countPerPage}")
+				else
+					$("a#prevUrl").attr("href", "/Bulletin_Board/bulletin_board_main_page.do?nowPage=${pagination.startPage - 1}&countPerPage=${pagination.countPerPage}&post_keyword=" + post_keyword)
+			});
+			
+			$(".indexUrl").on("click", function() {
+				var click_index = $(this).attr('value')
+
+				if (post_keyword == null)
+					$(this).attr("href", "/Bulletin_Board/bulletin_board_main_page.do?nowPage=" + click_index + "&countPerPage=${pagination.countPerPage}")
+				else
+					$(this).attr("href", "/Bulletin_Board/bulletin_board_main_page.do?nowPage=" + click_index + "&countPerPage=${pagination.countPerPage}&post_keyword=" + post_keyword)
+			});
+			
+			$('#nextUrl').click(function() {
+				if (post_keyword == null)
+					$("a#nextUrl").attr("href", "/Bulletin_Board/bulletin_board_main_page.do?nowPage=${pagination.endPage + 1}&countPerPage=${pagination.countPerPage}")
+				else
+					$("a#nextUrl").attr("href", "/Bulletin_Board/bulletin_board_main_page.do?nowPage=${pagination.endPage + 1}&countPerPage=${pagination.countPerPage}&post_keyword=" + post_keyword)
+			});
+		</script>
 	</body>
 </html>

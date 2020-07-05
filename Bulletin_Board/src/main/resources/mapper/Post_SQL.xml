@@ -7,9 +7,21 @@
 		]]>
 	</select>
 	
+	<select id="post_count_keyword" resultType="integer">
+		<![CDATA[
+			SELECT COUNT(post_index) FROM bulletin_board_post WHERE post_available=1 AND post_title LIKE #{post_keyword};
+		]]>
+	</select>
+	
 	<select id="post_list_contents" parameterType="hashmap" resultType="hashmap">
 		<![CDATA[
 			SELECT post_index, post_writter_id, post_title, post_time, post_view FROM bulletin_board_post WHERE post_available=1 ORDER BY post_index DESC Limit #{startIndex}, #{countPerPage};
+		]]>
+	</select>
+	
+	<select id="post_list_contents_keyword" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			SELECT post_index, post_writter_id, post_title, post_time, post_view FROM bulletin_board_post WHERE post_available=1 AND post_title LIKE #{post_keyword} ORDER BY post_index DESC Limit #{startIndex}, #{countPerPage};
 		]]>
 	</select>
 </mapper>

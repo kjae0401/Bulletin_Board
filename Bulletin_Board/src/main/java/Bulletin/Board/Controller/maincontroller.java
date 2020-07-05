@@ -123,12 +123,23 @@ public class maincontroller {
 	}
 	
 	@RequestMapping(value = "/bulletin_board_main_page.do", method=RequestMethod.GET)
-	public ModelAndView bulletin_board_main_page(@RequestParam(required=false, value="nowPage") String nowPage, @RequestParam(required=false, value="countPerPage") String countPerPage) throws Exception {
+	public ModelAndView bulletin_board_main_page(@RequestParam(required=false, value="nowPage") String nowPage, @RequestParam(required=false, value="countPerPage") String countPerPage,
+			HttpServletRequest post_keyword) throws Exception {
 		ModelAndView mv = new ModelAndView("bulletin_board_main_page");
+		String keyword = post_keyword.getParameter("post_keyword");
+		HashMap<String, Object> post_list_range = new HashMap<String, Object>();
 		
-		// 전체 게시글 수를 dao로 부터 받아온다. <postDAO, postService 추가>
-		int post_count =  postServiceImpl.post_count();
 		
+		// 전체 게시글 수를 dao로 부터 받아온다.
+		int post_count;
+		
+		if (keyword != null) {
+			post_list_range.put("post_keyword", "%"+keyword+"%");
+			mv.addObject("post_keyword", keyword);
+			post_count = postServiceImpl.post_count("%"+keyword+"%");
+		} else {
+			post_count = postServiceImpl.post_count();
+		}
 		// countPerPage 개수 변경으로 한 페이지에 표시되는 게시글의 수를 조절할 수 있도록 만들 수 있다.
 		if (nowPage == null && countPerPage == null) {
 			nowPage = "1";
@@ -139,14 +150,21 @@ public class maincontroller {
 			countPerPage = "10";
 		}
 		
-		Pagination pagination = new Bulletin.Board.Util.Pagination(post_count, Integer.parseInt(nowPage), Integer.parseInt(countPerPage));
-		HashMap<String, Integer> post_list_range = new HashMap<String, Integer>();
 		post_list_range.put("startIndex", (Integer.parseInt(nowPage)-1) * Integer.parseInt(countPerPage));
 		post_list_range.put("countPerPage", Integer.parseInt(countPerPage));
+		
 		List<HashMap<String, String>> post_list_contents = postServiceImpl.post_list(post_list_range);
 		
+		Pagination pagination = new Bulletin.Board.Util.Pagination(post_count, Integer.parseInt(nowPage), Integer.parseInt(countPerPage));
 		mv.addObject("pagination", pagination);
 		mv.addObject("post_list_contents", post_list_contents);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "bulletin_board_write_page.do")
+	public ModelAndView bulletin_board_write_page() throws Exception {
+		ModelAndView mv = new ModelAndView("bulletin_board_write_page");
 		
 		return mv;
 	}

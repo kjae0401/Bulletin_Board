@@ -9,7 +9,7 @@ public class Pagination {
 	private int lastPage;		// 마지막 페이지
 	private int sql_start;		// sql쿼리에 사용할 start
 	private int sql_end;		// end
-	private int countPage = 5;	// pagination (prev, next를 제외한)버튼 개수
+	private int countPage = 3;	// pagination (prev, next를 제외한)버튼 개수
 	
 	public Pagination(int total_post, int nowPage, int countPerPage) {
 		this.setNowPage(nowPage);

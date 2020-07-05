@@ -1,5 +1,5 @@
 table {
-	margin-top: 100px;
+	margin-top: 90px;
 }
 
 caption {
@@ -9,7 +9,7 @@ caption {
 
 th {
 	text-align: center;
-	font-size: 0.8em;
+	font-size: 0.7em;
 	margin-bottom: 30px;
 }
 
@@ -44,4 +44,17 @@ a:hover {
 
 .pagination > li > a {
 	float: none;
+}
+
+button {
+	float: right;
+	margin-right: 10px;
+}
+
+.post_keyword_form {
+	text-align: center;
+}
+.post_keyword {
+	padding-top: 4px;
+	padding-bottom: 5px;
 }
