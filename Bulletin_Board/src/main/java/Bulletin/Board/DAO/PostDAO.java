@@ -32,4 +32,9 @@ public class PostDAO extends AbstractDAO {
 		// TODO Auto-generated method stub
 		return (HashMap<String, String>) selectOne("Post.post_detail", post_index);
 	}
+
+	public void post_detail_view_update(int post_index) {
+		// TODO Auto-generated method stub
+		update("Post.post_detail_view_update", post_index);
+	}
 }

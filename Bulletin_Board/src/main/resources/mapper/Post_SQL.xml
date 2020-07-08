@@ -30,4 +30,10 @@
 			SELECT post_index, post_title, post_writter_id, post_time, post_view, post_contents FROM bulletin_board_post WHERE post_index=#{post_index} and post_available=1;
 		]]>
 	</select>
+	
+	<select id="post_detail_view_update" parameterType="integer">
+		<![CDATA[
+			UPDATE bulletin_board_post SET post_view = post_view+1 WHERE post_index=#{post_index};
+		]]>
+	</select>
 </mapper>

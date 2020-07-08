@@ -31,4 +31,9 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		return postDAO.post_detail(post_index);
 	}
+
+	public void post_detail_view_update(int post_index) {
+		// TODO Auto-generated method stub
+		postDAO.post_detail_view_update(post_index);
+	}
 }

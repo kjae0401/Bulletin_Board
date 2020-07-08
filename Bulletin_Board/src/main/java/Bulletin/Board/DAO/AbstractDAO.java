@@ -9,6 +9,10 @@ public class AbstractDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
+	public Object update(String queryId, Object params) {
+		return sqlSessionTemplate.update(queryId, params);
+	}
+	
 	// params 존재하지 않을 때
 	public Object selectOne(String queryId) {
 		return sqlSessionTemplate.selectOne(queryId);

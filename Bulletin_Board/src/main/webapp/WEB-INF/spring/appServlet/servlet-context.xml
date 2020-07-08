@@ -11,7 +11,7 @@
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
-
+		
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 
@@ -20,6 +20,16 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
+	
+	<!-- Interceptor 객체 생성 -->
+	<beans:bean id="authInterceptor" class="Bulletin.Board.Interceptor.authInterceptor"></beans:bean>
+	<!-- Interceptor 설정 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/bulletin_board_write_page.do"/>
+			<beans:ref bean="authInterceptor" />
+		</interceptor>
+	</interceptors>
 	
 	<context:component-scan base-package="Bulletin.Board.Controller" />
 	

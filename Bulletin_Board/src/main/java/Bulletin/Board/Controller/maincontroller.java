@@ -86,6 +86,15 @@ public class maincontroller {
 		return mv;
 	}
 	
+	@RequestMapping(value = "/logout_action.do")
+	public ModelAndView logout_action(HttpServletRequest request) throws Exception {
+		ModelAndView mv = new ModelAndView("redirect:bulletin_board_main_page.do");
+		
+		request.getSession().removeAttribute("user_id");
+		
+		return mv;
+	}
+	
 	@RequestMapping(value = "/signup_page.do")
 	public ModelAndView signup_page() throws Exception {
 		ModelAndView mv = new ModelAndView("signup_page");
@@ -166,7 +175,16 @@ public class maincontroller {
 	public ModelAndView bulletin_board_detail_page(HttpServletRequest data) throws Exception {
 		ModelAndView mv;
 		
+		String post_writter_id = data.getParameter("post_writter_id");
+		String user_id = (String) data.getSession().getAttribute("user_id");
 		int post_index = Integer.parseInt(data.getParameter("post_index"));
+		
+		if (user_id != null) {
+			if (!post_writter_id.equals(user_id)) {
+				postServiceImpl.post_detail_view_update(post_index);
+			}
+		}
+		
 		HashMap<String, String> post_detail = postServiceImpl.post_detail(post_index);
 		
 		if (post_detail == null) {

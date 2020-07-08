@@ -35,3 +35,6 @@ SELECT post_index, post_writter_id, post_title, post_time, post_view FROM bullet
 
 post detail search SQL :
 SELECT post_index, post_title, post_writter_id, post_time, post_view, post_contents FROM bulletin_board_post WHERE post_index=#{post_index} and post_available=1;
+
+post detail view update SQL :
+UPDATE bulletin_board_post SET post_view = post_view+1 WHERE post_index=#{post_index};

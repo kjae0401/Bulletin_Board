@@ -4,6 +4,15 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<%
+	Object obj = request.getSession().getAttribute("user_id");
+	String user_id;
+	
+	if (obj == null)
+		user_id = "로그인";
+	else
+		user_id = (String) obj;
+%>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -42,17 +51,16 @@
 			      	</ul>
 	
 					<ul class="nav navbar-nav navbar-right">
-				        <li class="dropdown">
-				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-				        	<ul class="dropdown-menu" role="menu">
-				            	<li><a href="#">Action</a></li>
-				            	<li><a href="#">Another action</a></li>
-				            	<li><a href="#">Something else here</a></li>
-				            
-				            	<li class="divider"></li>
-				            	<li><a href="#">로그아웃</a></li>
-				          	</ul>
-						</li>
+				        <% if (!user_id.equals("로그인")) { %>
+					        <li class="dropdown">
+					        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= user_id %> <span class="caret"></span></a>
+					        	<ul class="dropdown-menu" role="menu">
+					            	<li><a href="logout_action.do">로그아웃</a></li>
+					          	</ul>
+							</li>
+						<% } else { %>
+							<li><a href="login_page.do">로그인</a></li>
+						<% } %>
 					</ul>
 		    	</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
@@ -163,8 +171,9 @@
 			function select_post(index) {
 				var select_table = index.closest("tr").getElementsByTagName("td")
 				var select_element_index = select_table[0].innerText
+				var select_element_writter_id = select_table[2].innerText
 				
-				index.href = "/Bulletin_Board/bulletin_board_detail_page.do?post_index=" + select_element_index
+				index.href = "/Bulletin_Board/bulletin_board_detail_page.do?post_index=" + select_element_index + "&post_writter_id=" + select_element_writter_id
 			}
 		</script>
 	</body>
