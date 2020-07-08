@@ -162,7 +162,25 @@ public class maincontroller {
 		return mv;
 	}
 	
-	@RequestMapping(value = "bulletin_board_write_page.do")
+	@RequestMapping(value = "/bulletin_board_detail_page.do", method=RequestMethod.GET)
+	public ModelAndView bulletin_board_detail_page(HttpServletRequest data) throws Exception {
+		ModelAndView mv;
+		
+		int post_index = Integer.parseInt(data.getParameter("post_index"));
+		HashMap<String, String> post_detail = postServiceImpl.post_detail(post_index);
+		
+		if (post_detail == null) {
+			mv = new ModelAndView("redirect:bulletin_board_main_page.do");
+			// mv.addObject("post_detail_fail_msg", "post_detail_fail_msg");
+		} else {
+			mv = new ModelAndView("bulletin_board_detail_page");
+			mv.addObject("post_detail", post_detail);
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/bulletin_board_write_page.do")
 	public ModelAndView bulletin_board_write_page() throws Exception {
 		ModelAndView mv = new ModelAndView("bulletin_board_write_page");
 		

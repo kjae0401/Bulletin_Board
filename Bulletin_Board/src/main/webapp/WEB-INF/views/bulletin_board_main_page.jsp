@@ -38,7 +38,7 @@
 			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			    	<ul class="nav navbar-nav">
 			        	<li class="active"><a href="#">게시판 <span class="sr-only">(current)</span></a></li>
-			        	<li><a href="#">Link</a></li>
+			        	<li><a href="#">글쓰기</a></li>
 			      	</ul>
 	
 					<ul class="nav navbar-nav navbar-right">
@@ -80,20 +80,18 @@
 			</thead>
 			
 			<tbody>
-				<c:forEach items="${post_list_contents }" var="post_list_contents">	
-					<c:if test="${fn:length(post_list_contents) == 0 }">
-						<tr><td colspan="5">글이 존재하지 않습니다.</td></tr>
-					</c:if>
+				<c:if test="${empty post_list_contents}">
+					<tr><td colspan="5">글이 존재하지 않습니다.</td></tr>
+				</c:if>
 					
-					<c:if test="${fn:length(post_list_contents) != 0 }">
-						<tr>
-							<td>${post_list_contents.post_index }</td>
-							<td><div class="text-cllipsis"><a href="#">${post_list_contents.post_title }</a></div></td>
-							<td>${post_list_contents.post_writter_id }</td>
-							<td><fmt:formatDate value="${post_list_contents.post_time}" pattern="yyyy.MM.dd" /></td>
-							<td>${post_list_contents.post_view }</td>
-						</tr>
-					</c:if>
+				<c:forEach items="${post_list_contents }" var="post_list_contents">
+					<tr>
+						<td>${post_list_contents.post_index }</td>
+						<td><div class="text-cllipsis"><a href="" onclick="select_post(this)">${post_list_contents.post_title }</a></div></td>
+						<td>${post_list_contents.post_writter_id }</td>
+						<td><fmt:formatDate value="${post_list_contents.post_time}" pattern="yyyy.MM.dd" /></td>
+						<td>${post_list_contents.post_view }</td>
+					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
@@ -161,6 +159,13 @@
 				else
 					$("a#nextUrl").attr("href", "/Bulletin_Board/bulletin_board_main_page.do?nowPage=${pagination.endPage + 1}&countPerPage=${pagination.countPerPage}&post_keyword=" + post_keyword)
 			});
+			
+			function select_post(index) {
+				var select_table = index.closest("tr").getElementsByTagName("td")
+				var select_element_index = select_table[0].innerText
+				
+				index.href = "/Bulletin_Board/bulletin_board_detail_page.do?post_index=" + select_element_index
+			}
 		</script>
 	</body>
 </html>

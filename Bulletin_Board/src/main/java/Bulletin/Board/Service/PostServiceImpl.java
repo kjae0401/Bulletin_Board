@@ -26,4 +26,9 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		return postDAO.post_list_contents(post_list_range);
 	}
+
+	public HashMap<String, String> post_detail(int post_index) {
+		// TODO Auto-generated method stub
+		return postDAO.post_detail(post_index);
+	}
 }

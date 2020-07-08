@@ -32,3 +32,6 @@ VARCHAR(255) NOT NULL,
 
 post list search SQL :
 SELECT post_index, post_writter_id, post_title, post_time, post_view FROM bulletin_board_post WHERE post_available=1 ORDER BY post_index DESC Limit #{startIndex}, #{countPerPage};
+
+post detail search SQL :
+SELECT post_index, post_title, post_writter_id, post_time, post_view, post_contents FROM bulletin_board_post WHERE post_index=#{post_index} and post_available=1;

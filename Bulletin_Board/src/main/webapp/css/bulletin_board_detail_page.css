@@ -1,0 +1,36 @@
+table {
+	margin-top: 90px;
+}
+
+caption {
+	font-size: 30px;
+	text-align: center;
+}
+
+th {
+	text-align: center;
+	font-size: 0.9em;
+	margin-bottom: 30px;
+}
+
+td {
+	text-align: center;
+	font-size: 0.8em;
+}
+
+.text-cllipsis {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+	white-space: nowrap;
+}
+
+.text-cllipsis>p {
+	display: table-cell;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+p {
+	margin-bottom: 0px;
+}

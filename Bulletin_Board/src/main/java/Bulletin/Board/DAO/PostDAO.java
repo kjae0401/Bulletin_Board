@@ -26,4 +26,10 @@ public class PostDAO extends AbstractDAO {
 		else
 			return selectList("Post.post_list_contents_keyword", post_list_contents);
 	}
+
+	@SuppressWarnings("unchecked")
+	public HashMap<String, String> post_detail(int post_index) {
+		// TODO Auto-generated method stub
+		return (HashMap<String, String>) selectOne("Post.post_detail", post_index);
+	}
 }
