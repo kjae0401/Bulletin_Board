@@ -46,4 +46,9 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		return postDAO.post_delete(post_index);
 	}
+
+	public boolean post_contents_update(HashMap<String, String> update_data) {
+		// TODO Auto-generated method stub
+		return postDAO.post_contents_update(update_data);
+	}
 }

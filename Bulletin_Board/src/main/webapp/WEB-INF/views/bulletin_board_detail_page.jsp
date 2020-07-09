@@ -75,7 +75,7 @@
 				
 			<thead>
 				<tr>
-					<th colspan="5"><div class="text-ellipsis"><p><c:out value="${post_detail.post_title }"/></p></div></th>
+					<th colspan="5"><div class="text-ellipsis"><p class="post_title"><c:out value="${post_detail.post_title }"/></p></div></th>
 				</tr>
 			</thead>
 			
@@ -97,7 +97,7 @@
 				
 				<tr>
 					<td colspan="1">내용</td>
-					<td colspan="4"><label><c:out value="${post_detail.post_contents }"/></label></td>
+					<td colspan="4"><label class="post_contents"><c:out value="${post_detail.post_contents }"/></label></td>
 				</tr>
 
 				<c:if test="${Writer}">
@@ -131,7 +131,24 @@
 			}
 			
 			function post_update() {
+				var form = document.createElement('form')
+				var key = new Array('post_index', 'post_title', 'post_contents')
+				var value = new Array($('.post_index').val(), $('.post_title').text(), $('.post_contents').text())
 				
+				form.setAttribute('method', 'post')
+				form.setAttribute('action', 'bulletin_board_update_page.do')
+				document.charset = "utf-8"
+				
+				for (var i=0; i<key.length; i++) {
+					var hiddenfield = document.createElement("input")
+					hiddenfield.setAttribute('type', 'hidden')
+					hiddenfield.setAttribute('name', key[i])
+					hiddenfield.setAttribute('value', value[i])
+					form.appendChild(hiddenfield)
+				}
+				
+				document.body.append(form)
+				form.submit()
 			}
 		</script>
 	</body>

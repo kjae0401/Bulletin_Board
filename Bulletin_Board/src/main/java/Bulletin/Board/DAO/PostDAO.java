@@ -57,4 +57,14 @@ public class PostDAO extends AbstractDAO {
 			return false;
 		}
 	}
+
+	public boolean post_contents_update(HashMap<String, String> update_data) {
+		// TODO Auto-generated method stub
+		try {
+			update("Post.post_contents_update", update_data);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

@@ -44,3 +44,6 @@ INSERT INTO bulletin_board_post(post_writter_id, post_title, post_contents) VALU
 
 post delete SQL :
 UPDATE bulletin_board_post SET post_available=0 WHERE post_index=#{post_index};
+
+post contents update SQL :
+UPDATE bulletin_board_post SET post_contents=#{post_contents} WHERE post_index=#{post_index};

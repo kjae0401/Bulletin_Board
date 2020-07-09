@@ -48,4 +48,10 @@
 			UPDATE bulletin_board_post SET post_available=0 WHERE post_index=#{post_index};
 		]]>
 	</select>
+	
+	<select id="post_contents_update" parameterType="hashmap">
+		<![CDATA[
+			UPDATE bulletin_board_post SET post_contents=#{post_contents} WHERE post_index=#{post_index};
+		]]>
+	</select>
 </mapper>

@@ -135,7 +135,8 @@ public class maincontroller {
 	public ModelAndView bulletin_board_main_page(@RequestParam(required=false, value="nowPage") String nowPage, @RequestParam(required=false, value="countPerPage") String countPerPage,
 			HttpServletRequest post_keyword, @RequestParam(value="post_write_message", required=false, defaultValue="") String post_write_message,
 			@RequestParam(value="post_detail_fail_message", required=false, defaultValue="") String post_detail_fail_message,
-			@RequestParam(value="post_delete_message", required=false, defaultValue="") String post_delete_message) throws Exception {
+			@RequestParam(value="post_delete_message", required=false, defaultValue="") String post_delete_message,
+			@RequestParam(value="post_update_message", required=false, defaultValue="") String post_update_message) throws Exception {
 		ModelAndView mv = new ModelAndView("bulletin_board_main_page");
 		String keyword = post_keyword.getParameter("post_keyword");
 		HashMap<String, Object> post_list_range = new HashMap<String, Object>();
@@ -177,6 +178,9 @@ public class maincontroller {
 		
 		if (!post_delete_message.equals(""))
 			mv.addObject("post_delete_message", post_delete_message);
+		
+		if (!post_update_message.equals(""))
+			mv.addObject("post_update_message", post_update_message);
 		
 		return mv;
 	}
@@ -250,6 +254,38 @@ public class maincontroller {
 			redirectAttributes.addFlashAttribute("post_delete_message", "post_delete_success");
 		} else {
 			redirectAttributes.addFlashAttribute("post_delete_message", "post_delete_fail");
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/bulletin_board_update_page.do")
+	public ModelAndView bulletin_board_update_page(int post_index, String post_title, String post_contents) throws Exception {
+		ModelAndView mv = new ModelAndView("bulletin_board_update_page");
+		
+		mv.addObject("post_index", post_index);
+		mv.addObject("post_title", post_title);
+		mv.addObject("post_contents", post_contents);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "bulletin_board_update_page_action.do")
+	public ModelAndView bulletin_board_update_page_action(String post_index, String post_contents, HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
+		ModelAndView mv;
+		
+		HashMap<String, String> update_data = new HashMap<String, String>();
+		update_data.put("post_index", post_index);
+		update_data.put("post_contents", post_contents);
+		boolean result = postServiceImpl.post_contents_update(update_data);
+		
+		if (result) {
+			String url = "redirect:bulletin_board_detail_page.do?post_index=" + post_index + "&post_writter_id=" + (String) request.getSession().getAttribute("user_id");
+			mv = new ModelAndView(url);
+			
+		} else {
+			mv = new ModelAndView("redirect:bulletin_board_main_page.do");
+			redirectAttributes.addFlashAttribute("post_update_message", "post_update_fail");
 		}
 		
 		return mv;
