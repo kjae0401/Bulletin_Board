@@ -27,6 +27,7 @@
 	<interceptors>
 		<interceptor>
 			<mapping path="/bulletin_board_write_page.do"/>
+			<mapping path="/bulletin_board_write_page_action.do"/>
 			<beans:ref bean="authInterceptor" />
 		</interceptor>
 	</interceptors>

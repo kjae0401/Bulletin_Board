@@ -37,4 +37,14 @@ public class PostDAO extends AbstractDAO {
 		// TODO Auto-generated method stub
 		update("Post.post_detail_view_update", post_index);
 	}
+
+	public boolean post_write(HashMap<String, String> post_write_data) {
+		// TODO Auto-generated method stub
+		try {
+			insert("Post.post_write", post_write_data);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

@@ -133,11 +133,10 @@ public class maincontroller {
 	
 	@RequestMapping(value = "/bulletin_board_main_page.do", method=RequestMethod.GET)
 	public ModelAndView bulletin_board_main_page(@RequestParam(required=false, value="nowPage") String nowPage, @RequestParam(required=false, value="countPerPage") String countPerPage,
-			HttpServletRequest post_keyword) throws Exception {
+			HttpServletRequest post_keyword, @RequestParam(value="post_write_message", required=false, defaultValue="") String post_write_message) throws Exception {
 		ModelAndView mv = new ModelAndView("bulletin_board_main_page");
 		String keyword = post_keyword.getParameter("post_keyword");
 		HashMap<String, Object> post_list_range = new HashMap<String, Object>();
-		
 		
 		// 전체 게시글 수를 dao로 부터 받아온다.
 		int post_count;
@@ -168,6 +167,9 @@ public class maincontroller {
 		mv.addObject("pagination", pagination);
 		mv.addObject("post_list_contents", post_list_contents);
 		
+		if (!post_write_message.equals(""))
+			mv.addObject("post_write_message", post_write_message);
+		
 		return mv;
 	}
 	
@@ -183,6 +185,8 @@ public class maincontroller {
 			if (!post_writter_id.equals(user_id)) {
 				postServiceImpl.post_detail_view_update(post_index);
 			}
+		} else {
+			postServiceImpl.post_detail_view_update(post_index);
 		}
 		
 		HashMap<String, String> post_detail = postServiceImpl.post_detail(post_index);
@@ -201,6 +205,25 @@ public class maincontroller {
 	@RequestMapping(value = "/bulletin_board_write_page.do")
 	public ModelAndView bulletin_board_write_page() throws Exception {
 		ModelAndView mv = new ModelAndView("bulletin_board_write_page");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/bulletin_board_write_page_action.do")
+	public ModelAndView bulletin_board_write_page_action(String post_title, String post_contents, HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
+		ModelAndView mv = new ModelAndView("redirect:bulletin_board_main_page.do");
+		
+		HashMap<String, String> post_write_data = new HashMap<String, String>();
+		post_write_data.put("post_writter_id", (String) request.getSession().getAttribute("user_id"));
+		post_write_data.put("post_title", post_title);
+		post_write_data.put("post_contents", post_contents);
+		
+		boolean flag = postServiceImpl.post_write(post_write_data);
+		
+		if (flag)
+			redirectAttributes.addFlashAttribute("post_write_message", "post_write_success");
+		else
+			redirectAttributes.addFlashAttribute("post_write_message", "post_write_fail");
 		
 		return mv;
 	}

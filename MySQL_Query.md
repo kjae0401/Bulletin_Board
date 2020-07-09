@@ -38,3 +38,6 @@ SELECT post_index, post_title, post_writter_id, post_time, post_view, post_conte
 
 post detail view update SQL :
 UPDATE bulletin_board_post SET post_view = post_view+1 WHERE post_index=#{post_index};
+
+post write SQL :
+INSERT INTO bulletin_board_post(post_writter_id, post_title, post_contents) VALUE(#{post_writter_id}, #{post_title}, #{post_contents});

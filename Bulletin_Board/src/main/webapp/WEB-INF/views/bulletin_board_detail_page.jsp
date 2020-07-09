@@ -105,11 +105,13 @@
 				</tbody>
 		</table>
 		
-		<div class="comment_container">
+		<div class="container">
 			<form method="post">
 				<input type="text" name="post_comment" placeholder="댓글">
 				<input type="submit" value="작성">
 			</form>
+			
+			
 		</div>
 	</body>
 </html>

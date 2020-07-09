@@ -20,8 +20,8 @@
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
-		 <!-- custom css -->
-		<!--<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bulletin_board_main_page.css">-->
+		<!-- custom css -->
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bulletin_board_write_page.css">
 		
 		<title>Bulletin Board</title>
 	</head>
@@ -63,22 +63,44 @@
 			</div><!-- /.container-fluid -->
 		</nav>
 		
-		<table>
+		<table class="table">
 			<caption><a href="/Bulletin_Board/bulletin_board_main_page.do">게시판</a></caption>
+			<colgroup>
+				<col width=20%>
+				<col width=80%>
+			</colgroup>
 			
-			<tbody>
-				<tr>
-					<td>제목</td>
-					<td><input type="text"/></td>
-				</tr>
+			<form action="bulletin_board_write_page_action.do" method="post">
+				<thead>
+					<tr>
+						<td>제목</td>
+						<td><input type="text" name="post_title"/></td>
+					</tr>
+				</thead>
 				
-				<tr>
-					<td>내용</td>
-					<td><textarea ></textarea></td>
-				</tr>
-			</tbody>
+				<tbody>
+					<tr>
+						<td>내용</td>
+						<td><textarea name="post_contents"></textarea></td>
+					</tr>
+					
+					<tr>
+						<td class="go_list_button">
+							<button type="button" class="btn btn-primary" onclick="location.href='/Bulletin_Board/bulletin_board_main_page.do'">목록</button>
+						</td>
+						<td class="write_action_button">
+							<button type="submit" class="btn btn-primary">작성</button>
+						</td>
+					</tr>
+				</tbody>
+			</form>
 		</table>
 		
-		<button type="button" class="btn btn-primary" href="#">글쓰기</button>
+		<script>
+			$('input[type="text"]').keydown(function () {
+				if (event.keyCode == 13)
+					event.preventDefault()
+			});
+		</script>
 	</body>
 </html>
