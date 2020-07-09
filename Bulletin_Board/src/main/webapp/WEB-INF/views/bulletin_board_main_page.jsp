@@ -189,6 +189,14 @@
 			
 			if (post_detail_fail_message == 'post_detail_fail')
 				alert('존재하지 않거나 이미 삭제된 글입니다.')
+				
+			// 글 삭제 메시지
+			var post_delete_message ="${post_delete_message}"
+			
+			if (post_delete_message == 'post_delete_success')
+				alert('글이 삭제되었습니다.')
+			else if (post_delete_message == 'post_delete_fail')
+				alert('글 삭제에 실패했습니다.')
 		</script>
 	</body>
 </html>

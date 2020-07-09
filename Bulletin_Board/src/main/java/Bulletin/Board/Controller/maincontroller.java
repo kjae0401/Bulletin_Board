@@ -134,7 +134,8 @@ public class maincontroller {
 	@RequestMapping(value = "/bulletin_board_main_page.do", method=RequestMethod.GET)
 	public ModelAndView bulletin_board_main_page(@RequestParam(required=false, value="nowPage") String nowPage, @RequestParam(required=false, value="countPerPage") String countPerPage,
 			HttpServletRequest post_keyword, @RequestParam(value="post_write_message", required=false, defaultValue="") String post_write_message,
-			@RequestParam(value="post_detail_fail_message", required=false, defaultValue="") String post_detail_fail_message) throws Exception {
+			@RequestParam(value="post_detail_fail_message", required=false, defaultValue="") String post_detail_fail_message,
+			@RequestParam(value="post_delete_message", required=false, defaultValue="") String post_delete_message) throws Exception {
 		ModelAndView mv = new ModelAndView("bulletin_board_main_page");
 		String keyword = post_keyword.getParameter("post_keyword");
 		HashMap<String, Object> post_list_range = new HashMap<String, Object>();
@@ -173,6 +174,9 @@ public class maincontroller {
 		
 		if (!post_detail_fail_message.equals(""))
 			mv.addObject("post_detail_fail_message", post_detail_fail_message);
+		
+		if (!post_delete_message.equals(""))
+			mv.addObject("post_delete_message", post_delete_message);
 		
 		return mv;
 	}

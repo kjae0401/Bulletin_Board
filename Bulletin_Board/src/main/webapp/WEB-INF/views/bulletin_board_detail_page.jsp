@@ -104,7 +104,7 @@
 					<tr>
 						<td colspan="5" class="editable_button">
 							<input type="hidden" class="post_index" value=<c:out value="${post_detail.post_index }"/> />
-							<button type="button" class="btn btn-primary">수정</button>
+							<button type="button" class="btn btn-primary" onclick="post_update()">수정</button>
 							<button type="button" class="btn btn-primary" onclick="post_delete()">삭제</button>
 						</td>
 					</tr>
@@ -128,6 +128,10 @@
 				} else {
 					return false
 				}
+			}
+			
+			function post_update() {
+				
 			}
 		</script>
 	</body>
