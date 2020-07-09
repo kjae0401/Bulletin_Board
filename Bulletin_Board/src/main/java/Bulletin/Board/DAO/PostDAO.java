@@ -47,4 +47,14 @@ public class PostDAO extends AbstractDAO {
 			return false;
 		}
 	}
+
+	public boolean post_delete(int post_index) {
+		// TODO Auto-generated method stub
+		try {
+			update("Post.post_delete", post_index);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

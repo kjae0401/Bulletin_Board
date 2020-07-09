@@ -176,12 +176,19 @@
 				index.href = "/Bulletin_Board/bulletin_board_detail_page.do?post_index=" + select_element_index + "&post_writter_id=" + select_element_writter_id
 			}
 			
+			// 글 쓰기 관련 메세지
 			var post_write_message = "${post_write_message}"
 			
 			if (post_write_message == 'post_write_success')
 				alert('글이 작성되었습니다.')
 			else if (post_write_message == 'post_write_fail')
 				alert('글 작성에 실패했습니다.')
+			
+			// 글 보기 실패
+			var post_detail_fail_message = "${post_detail_fail_message}"
+			
+			if (post_detail_fail_message == 'post_detail_fail')
+				alert('존재하지 않거나 이미 삭제된 글입니다.')
 		</script>
 	</body>
 </html>

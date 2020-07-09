@@ -41,3 +41,6 @@ UPDATE bulletin_board_post SET post_view = post_view+1 WHERE post_index=#{post_i
 
 post write SQL :
 INSERT INTO bulletin_board_post(post_writter_id, post_title, post_contents) VALUE(#{post_writter_id}, #{post_title}, #{post_contents});
+
+post delete SQL :
+UPDATE bulletin_board_post SET post_available=0 WHERE post_index=#{post_index};

@@ -34,3 +34,7 @@ td {
 p {
 	margin-bottom: 0px;
 }
+
+.editable_button {
+	text-align: right;
+}

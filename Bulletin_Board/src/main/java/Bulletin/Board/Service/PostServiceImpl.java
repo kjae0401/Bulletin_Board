@@ -41,4 +41,9 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		return postDAO.post_write(post_write_data);
 	}
+
+	public boolean post_delete(int post_index) {
+		// TODO Auto-generated method stub
+		return postDAO.post_delete(post_index);
+	}
 }

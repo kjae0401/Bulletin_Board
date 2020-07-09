@@ -70,7 +70,7 @@
 				<col width=80%>
 			</colgroup>
 			
-			<form action="bulletin_board_write_page_action.do" method="post">
+			<form action="bulletin_board_write_page_action.do" method="post" onsubmit="return post_title_empty_check()">
 				<thead>
 					<tr>
 						<td>제목</td>
@@ -97,6 +97,15 @@
 		</table>
 		
 		<script>
+			function post_title_empty_check() {
+				if ($('input[name=post_title]').val() == '') {
+					$('input[name=post_title]').focus()
+					return false
+				} else{
+					return true
+				}
+			}
+		
 			$('input[type="text"]').keydown(function () {
 				if (event.keyCode == 13)
 					event.preventDefault()

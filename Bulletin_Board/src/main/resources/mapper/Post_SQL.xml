@@ -33,13 +33,19 @@
 	
 	<select id="post_detail_view_update" parameterType="integer">
 		<![CDATA[
-			UPDATE bulletin_board_post SET post_view = post_view+1 WHERE post_index=#{post_index};
+			UPDATE bulletin_board_post SET post_view=post_view+1 WHERE post_index=#{post_index};
 		]]>
 	</select>
 	
 	<select id="post_write" parameterType="hashmap">
 		<![CDATA[
 			INSERT INTO bulletin_board_post(post_writter_id, post_title, post_contents) VALUE(#{post_writter_id}, #{post_title}, #{post_contents});
+		]]>
+	</select>
+	
+	<select id="post_delete" parameterType="integer">
+		<![CDATA[
+			UPDATE bulletin_board_post SET post_available=0 WHERE post_index=#{post_index};
 		]]>
 	</select>
 </mapper>

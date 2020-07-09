@@ -68,41 +68,48 @@
 	
 		<table class="table">	
 			<caption><a href="/Bulletin_Board/bulletin_board_main_page.do">게시판</a></caption>
+			<colgroup>
+				<col style="width:20%">
+				<col style="width:80%">
+			</colgroup>
+				
+			<thead>
+				<tr>
+					<th colspan="5"><div class="text-ellipsis"><p><c:out value="${post_detail.post_title }"/></p></div></th>
+				</tr>
+			</thead>
 			
-				<input type="hidden" class="post_index" value=<c:out value="${post_detail.post_index }"/> />
+			<tbody>
+				<tr>
+					<td colspan="1">작성자</td>
+					<td colspan="4"><c:out value="${post_detail.post_writter_id }"/></td>
+				</tr>
+	
+				<tr>
+					<td colspan="1">작성 시간</td>
+					<td colspan="4"><fmt:formatDate value="${post_detail.post_time}" pattern="yyyy.MM.dd kk:mm:ss" /></td>
+				</tr>
+	
+				<tr>
+					<td colspan="1">조회수</td>
+					<td colspan="4"><c:out value="${post_detail.post_view }"/></td>
+				</tr>
 				
-				<colgroup>
-					<col style="width:20%">
-					<col style="width:80%">
-				</colgroup>
-				
-				<thead>
+				<tr>
+					<td colspan="1">내용</td>
+					<td colspan="4"><label><c:out value="${post_detail.post_contents }"/></label></td>
+				</tr>
+
+				<c:if test="${Writer}">
 					<tr>
-						<th colspan="5"><div class="text-ellipsis"><p><c:out value="${post_detail.post_title }"/></p></div></th>
+						<td colspan="5" class="editable_button">
+							<input type="hidden" class="post_index" value=<c:out value="${post_detail.post_index }"/> />
+							<button type="button" class="btn btn-primary">수정</button>
+							<button type="button" class="btn btn-primary" onclick="post_delete()">삭제</button>
+						</td>
 					</tr>
-				</thead>
-				
-				<tbody>
-					<tr>
-						<td colspan="1">작성자</td>
-						<td colspan="4"><c:out value="${post_detail.post_writter_id }"/></td>
-					</tr>
-		
-					<tr>
-						<td colspan="1">작성 시간</td>
-						<td colspan="4"><fmt:formatDate value="${post_detail.post_time}" pattern="yyyy.MM.dd kk:mm:ss" /></td>
-					</tr>
-		
-					<tr>
-						<td colspan="1">조회수</td>
-						<td colspan="4"><c:out value="${post_detail.post_view }"/></td>
-					</tr>
-					
-					<tr>
-						<td colspan="1">내용</td>
-						<td colspan="4"><label><c:out value="${post_detail.post_contents }"/></label></td>
-					</tr>
-				</tbody>
+				</c:if>
+			</tbody>
 		</table>
 		
 		<div class="container">
@@ -113,5 +120,15 @@
 			
 			
 		</div>
+		
+		<script>
+			function post_delete() {
+				if (confirm("글을 삭제하시겠습니까?") == true) {
+					location.href = "/Bulletin_Board/bulletin_board_delete_action.do?post_index=" + $('.post_index').val()
+				} else {
+					return false
+				}
+			}
+		</script>
 	</body>
 </html>
