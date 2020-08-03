@@ -1,5 +1,8 @@
-table {
+.table {
+	max-width: 75%;
 	margin-top: 90px;
+	margin-inline-start: auto;
+	margin-inline-end: auto;
 }
 
 caption {
@@ -38,3 +41,36 @@ p {
 .editable_button {
 	text-align: right;
 }
+
+.comment_wrtie_container {
+	width: 100%;
+	max-width: 75%;
+	margin-inline-start: auto;
+	margin-inline-end: auto;
+}
+
+.comment_wrtie_container form {
+	text-align: center;
+}
+
+.comment_wrtie_container input[type="text"] {
+	width: 80%;
+}
+
+ul {
+	border-bottom: solid 1px lightgray;
+	padding-bottom: 7px;
+}
+
+ul li {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	list-style: none;
+	float: left;
+	text-align: center;
+}
+
+.comment_user_id { width: 15%; }
+.commnet_contents { width: 65%; }
+.comment_write_time { width: 15%; }
+.comment_delete_button { width: 5%; }

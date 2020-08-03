@@ -112,13 +112,32 @@
 			</tbody>
 		</table>
 		
-		<div class="container">
-			<form method="post">
+		<div class="comment_wrtie_container">
+			<form action="bulletin_board_detail_page_comment_action.do" method="post">
 				<input type="text" name="post_comment" placeholder="댓글">
 				<input type="submit" value="작성">
 			</form>
+						
+			<ul>
+				<li class="comment_user_id">작성자</li>
+				<li class="commnet_contents">내용</li>
+				<li class="comment_write_time">시간</li>
+				<button class="comment_delete_button" value="삭제"/>
+			</ul>
 			
+			<ul>
+				<li class="comment_user_id">작성자</li>
+				<li class="commnet_contents">내용</li>
+				<li class="comment_write_time">시간</li>
+				<button class="comment_delete_button" value="삭제"/>
+			</ul>
 			
+			<ul>
+				<li class="comment_user_id">작성자</li>
+				<li class="commnet_contents">내용</li>
+				<li class="comment_write_time">시간</li>
+				<button class="comment_delete_button" value="삭제"/>
+			</ul>
 		</div>
 		
 		<script>

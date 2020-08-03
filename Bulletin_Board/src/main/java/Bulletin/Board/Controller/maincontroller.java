@@ -219,6 +219,17 @@ public class maincontroller {
 		return mv;
 	}
 	
+	@RequestMapping(value = "/bulletin_board_detail_page_comment_action.do")
+	public ModelAndView bulletin_board_detail_page_comment_action(String post_comment, HttpServletRequest data) {
+		// 인터셉터 추가로 session id 체크
+		ModelAndView mv = new ModelAndView("");
+		
+		String user_id = (String) data.getSession().getAttribute("user_id");
+		HashMap<String, String> comment_write_data = new HashMap<String, String>();
+		
+		return mv;
+	}
+	
 	@RequestMapping(value = "/bulletin_board_write_page.do")
 	public ModelAndView bulletin_board_write_page() throws Exception {
 		ModelAndView mv = new ModelAndView("bulletin_board_write_page");

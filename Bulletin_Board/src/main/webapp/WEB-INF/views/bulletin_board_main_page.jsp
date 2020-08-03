@@ -65,46 +65,48 @@
 		    	</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
 		</nav>
-	
-		<table class="table table-striped">
-			<caption><a href="/Bulletin_Board/bulletin_board_main_page.do">게시판</a></caption>
-			
-			<colgroup>
-				<col width="10%">
-				<col width="40%">
-				<col width="15%">
-				<col width="15%">
-				<col width="10%">
-			</colgroup>
-			
-			<thead>
-				<tr>
-					<th>번호</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>작성일</th>
-					<th>조회수</th>
-				</tr>
-			</thead>
-			
-			<tbody>
-				<c:if test="${empty post_list_contents}">
-					<tr><td colspan="5">글이 존재하지 않습니다.</td></tr>
-				</c:if>
-					
-				<c:forEach items="${post_list_contents }" var="post_list_contents">
-					<tr>
-						<td>${post_list_contents.post_index }</td>
-						<td><div class="text-cllipsis"><a href="" onclick="select_post(this)">${post_list_contents.post_title }</a></div></td>
-						<td>${post_list_contents.post_writter_id }</td>
-						<td><fmt:formatDate value="${post_list_contents.post_time}" pattern="yyyy.MM.dd" /></td>
-						<td>${post_list_contents.post_view }</td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
 		
-		<button type="button" class="btn btn-primary" onclick="location.href='/Bulletin_Board/bulletin_board_write_page.do'">글쓰기</button>
+		<div class="main_contents_container">
+			<table class="table table-striped">
+				<caption><a href="/Bulletin_Board/bulletin_board_main_page.do">게시판</a></caption>
+				
+				<colgroup>
+					<col width="10%">
+					<col width="40%">
+					<col width="15%">
+					<col width="15%">
+					<col width="10%">
+				</colgroup>
+				
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+						<th>조회수</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<c:if test="${empty post_list_contents}">
+						<tr><td colspan="5">글이 존재하지 않습니다.</td></tr>
+					</c:if>
+						
+					<c:forEach items="${post_list_contents }" var="post_list_contents">
+						<tr>
+							<td>${post_list_contents.post_index }</td>
+							<td><div class="text-cllipsis"><a href="" onclick="select_post(this)">${post_list_contents.post_title }</a></div></td>
+							<td>${post_list_contents.post_writter_id }</td>
+							<td><fmt:formatDate value="${post_list_contents.post_time}" pattern="yyyy.MM.dd" /></td>
+							<td>${post_list_contents.post_view }</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			
+			<button type="button" class="btn btn-primary" onclick="location.href='/Bulletin_Board/bulletin_board_write_page.do'">글쓰기</button>
+		</div>
 		<br>
 		
 		<ul class="pagination">
