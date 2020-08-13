@@ -1,16 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!-- JSTL -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
 	Object obj = request.getSession().getAttribute("user_id");
 	String user_id;
 	
-	if (obj == null)
+	if (obj == null) {
 		user_id = "로그인";
-	else
+	} else {
 		user_id = (String) obj;
+		pageContext.setAttribute("user_id", user_id);
+	}
 %>
 
 <!DOCTYPE html>
@@ -47,7 +50,7 @@
 			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			    	<ul class="nav navbar-nav">
 			        	<li class="active"><a href="#">게시판 <span class="sr-only">(current)</span></a></li>
-			        	<li><a href="#">Link</a></li>
+			        	<li><a href="#">글쓰기</a></li>
 			      	</ul>
 	
 					<ul class="nav navbar-nav navbar-right">
@@ -116,28 +119,22 @@
 			<form action="bulletin_board_detail_page_comment_action.do" method="post">
 				<input type="text" name="post_comment" placeholder="댓글">
 				<input type="submit" value="작성">
+				<input type="hidden" name="current_index" value=<c:out value="${post_detail.post_index }"/> />
+				<input type="hidden" name="current_parameter" value="<%=request.getQueryString() %>">
 			</form>
-						
-			<ul>
-				<li class="comment_user_id">작성자</li>
-				<li class="commnet_contents">내용</li>
-				<li class="comment_write_time">시간</li>
-				<button class="comment_delete_button" value="삭제"/>
-			</ul>
 			
-			<ul>
-				<li class="comment_user_id">작성자</li>
-				<li class="commnet_contents">내용</li>
-				<li class="comment_write_time">시간</li>
-				<button class="comment_delete_button" value="삭제"/>
-			</ul>
-			
-			<ul>
-				<li class="comment_user_id">작성자</li>
-				<li class="commnet_contents">내용</li>
-				<li class="comment_write_time">시간</li>
-				<button class="comment_delete_button" value="삭제"/>
-			</ul>
+			<c:forEach items="${post_detail_comment }" var="post_detail_comment">
+				<ul class="comment_list">
+					<li class="comment_index">${post_detail_comment.comment_index }</li>
+					<li class="comment_user_id">${post_detail_comment.comment_writter_id }</li>
+					<li class="commnet_contents">${post_detail_comment.comment_contents }</li>
+					<li class="comment_write_time">${post_detail_comment.comment_time }"</li>
+					
+					<c:if test="${user_id eq 'kjae0401' }">
+						<li class="comment_delete_button"><a onclick="comment_delete_confirm(this);">삭제</a></li>
+					</c:if>
+				</ul>
+			</c:forEach>
 		</div>
 		
 		<script>
@@ -169,6 +166,44 @@
 				document.body.append(form)
 				form.submit()
 			}
+			
+			function comment_delete_confirm(comment_index) {
+				var select_comment = comment_index.closest("ul").getElementsByTagName("li")
+				var select_element_index = select_comment[0].innerText
+				var result = confirm('댓글을 삭제하시겠습니까?')
+				
+				if (result) {
+					var key = new Array('comment_index', 'current_parameter')
+					var value = new Array(select_element_index, '<%=request.getQueryString() %>')
+					var form = document.createElement('form')
+					
+					form.setAttribute('method', 'post')
+					form.setAttribute('action', 'bulletin_board_detail_page_comment_delete_action.do')
+					document.charset = "utf-8"
+					
+					for(var i=0; i<2; i++) {
+						var hiddenfield = document.createElement("input")
+						hiddenfield.setAttribute('type', 'hidden')
+						hiddenfield.setAttribute('name', key[i])
+						hiddenfield.setAttribute('value', value[i])
+						form.appendChild(hiddenfield)
+					}
+					
+					document.body.append(form)
+					form.submit()
+				}
+			}
+			
+			// 댓글 작성 실패 메시지
+			var comment_write_message = "${comment_write_fail}"
+			
+			if (comment_write_message == 'comment_write_fail')
+				alert('댓글 작성에 실패하였습니다.')
+			// 댓글 삭제 실패 메시지
+			var comment_delete_message = "${comment_delete_fail}"
+			
+			if (comment_delete_message == 'comment_delete_fail')
+				alert('댓글 삭제에 실패하였습니다.')
 		</script>
 	</body>
 </html>

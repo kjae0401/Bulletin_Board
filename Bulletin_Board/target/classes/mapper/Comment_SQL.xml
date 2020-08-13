@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Comment">
+	<select id="comment_write" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO bulletin_board_comment(comment_post_index, comment_writter_id, comment_contents) VALUES(#{comment_post_index}, #{comment_writter_id}, #{comment_contents});
+		]]>
+	</select>
+	
+	<select id="post_detail_comment" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			SELECT comment_index, comment_writter_id, comment_contents, comment_time FROM bulletin_board_comment WHERE comment_available=1 AND comment_post_index=#{post_index} order by comment_index asc;
+		]]>
+	</select>
+	
+	<select id="comment_delete" parameterType="String">
+		<![CDATA[
+			UPDATE bulletin_board_comment SET comment_available=0 WHERE comment_index=#{comment_index};
+		]]>
+	</select>
+</mapper>

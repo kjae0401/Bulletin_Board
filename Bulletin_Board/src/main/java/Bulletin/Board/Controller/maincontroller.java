@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import Bulletin.Board.Service.CommentServiceImpl;
 import Bulletin.Board.Service.PostServiceImpl;
 import Bulletin.Board.Service.UserServiceImpl;
 import Bulletin.Board.Util.Pagination;
@@ -34,6 +35,8 @@ public class maincontroller {
 	private UserServiceImpl userServiceImpl;
 	@Autowired
 	private PostServiceImpl postServiceImpl;
+	@Autowired
+	private CommentServiceImpl commentServiceImpl;
 	private static final Logger logger = LoggerFactory.getLogger(maincontroller.class);
 	
 	/**
@@ -186,7 +189,9 @@ public class maincontroller {
 	}
 	
 	@RequestMapping(value = "/bulletin_board_detail_page.do", method=RequestMethod.GET)
-	public ModelAndView bulletin_board_detail_page(HttpServletRequest data, RedirectAttributes redirectAttributes) throws Exception {
+	public ModelAndView bulletin_board_detail_page(HttpServletRequest data, RedirectAttributes redirectAttributes,
+			@RequestParam(value="comment_write_fail", required=false, defaultValue="") String comment_write_message,
+			@RequestParam(value="comment_delete_fail", required=false, defaultValue="") String comment_delete_message) throws Exception {
 		ModelAndView mv;
 		
 		String post_writter_id = data.getParameter("post_writter_id");
@@ -214,18 +219,59 @@ public class maincontroller {
 				mv.addObject("Writer", true);
 			else
 				mv.addObject("Writer", false);
+			
+			List<HashMap<String, String>> post_detail_comment = commentServiceImpl.post_detail_comment(post_index);
+			
+			if (post_detail_comment != null)
+				mv.addObject("post_detail_comment", post_detail_comment);
+		}
+		
+		
+		// 댓글 작성 실패 메시지 전송
+		if (comment_write_message.equals("comment_write_fail")) {
+			mv.addObject("comment_write_fail", "comment_write_fail");
+		}
+		// 댓글 삭제 실패 메시지 전송
+		if (comment_delete_message.equals("comment_delete_fail")) {
+			mv.addObject("comment_delete_fail", "comment_delete_fail");
 		}
 		
 		return mv;
 	}
 	
 	@RequestMapping(value = "/bulletin_board_detail_page_comment_action.do")
-	public ModelAndView bulletin_board_detail_page_comment_action(String post_comment, HttpServletRequest data) {
+	public ModelAndView bulletin_board_detail_page_comment_action(String post_comment, String current_index, String current_parameter, HttpServletRequest data, RedirectAttributes redirectAttributes) throws Exception {
 		// 인터셉터 추가로 session id 체크
-		ModelAndView mv = new ModelAndView("");
+		ModelAndView mv = new ModelAndView("redirect:bulletin_board_detail_page.do?" + current_parameter);
 		
 		String user_id = (String) data.getSession().getAttribute("user_id");
-		HashMap<String, String> comment_write_data = new HashMap<String, String>();
+		String post_index = current_index;
+		
+		if (post_index == null) {
+			redirectAttributes.addFlashAttribute("comment_write_fail", "comment_write_fail");
+		} else {
+			HashMap<String, String> comment_write_data = new HashMap<String, String>();
+			comment_write_data.put("comment_writter_id", user_id);
+			comment_write_data.put("comment_contents", post_comment);
+			comment_write_data.put("comment_post_index", post_index);
+			boolean result = commentServiceImpl.comment_write(comment_write_data);
+			
+			if (!result) {
+				redirectAttributes.addFlashAttribute("comment_write_fail", "comment_write_fail");
+			}
+		}
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/bulletin_board_detail_page_comment_delete_action.do")
+	public ModelAndView bulletin_board_detail_page_comment_delete_action(String comment_index, String current_parameter, RedirectAttributes redirectAttributes) throws Exception {
+		ModelAndView mv = new ModelAndView("redirect:bulletin_board_detail_page.do?" + current_parameter);
+		
+		boolean result = commentServiceImpl.comment_delete(comment_index);
+		
+		if (!result)
+			redirectAttributes.addFlashAttribute("comment_delete_fail", "comment_delete_fail");
 		
 		return mv;
 	}

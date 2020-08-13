@@ -38,9 +38,11 @@
 	<!-- Service -->
 	<beans:bean id="UserService" class="Bulletin.Board.Service.UserServiceImpl" />
 	<beans:bean id="PostService" class="Bulletin.Board.Service.PostServiceImpl" />
-	
+	<beans:bean id="CommentService" class="Bulletin.Board.Service.CommentServiceImpl" />
+
 	<!-- DAO -->
 	<beans:bean id="UserDAO" class="Bulletin.Board.DAO.UserDAO" />
 	<beans:bean id="PostDAO" class="Bulletin.Board.DAO.PostDAO" />
+	<beans:bean id="CommentDAO" class="Bulletin.Board.DAO.CommentDAO" />
 	
 </beans:beans>

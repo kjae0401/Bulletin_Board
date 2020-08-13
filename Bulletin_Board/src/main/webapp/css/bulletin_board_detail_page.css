@@ -57,20 +57,33 @@ p {
 	width: 80%;
 }
 
-ul {
+.comment_list {
 	border-bottom: solid 1px lightgray;
+	border-left: solid 1px lightgray;
+	border-right: solid 1px lightgray;
 	padding-bottom: 7px;
-}
-
-ul li {
 	margin-top: 5px;
 	margin-bottom: 5px;
-	list-style: none;
+	display: table;
+	width: 100%;
+}
+
+.comment_list>li {
+	list-style-type: none;
 	float: left;
 	text-align: center;
 }
 
+.comment_index { display: none; width: 0%; }
 .comment_user_id { width: 15%; }
 .commnet_contents { width: 65%; }
 .comment_write_time { width: 15%; }
 .comment_delete_button { width: 5%; }
+
+.comment_delete_button>a {
+	text-decoration: none;
+}
+
+.comment_delete_button>a:hover {
+	background-color: yellow;
+}
