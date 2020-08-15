@@ -43,8 +43,8 @@
 				<!-- Collect the nav links, forms, and other content for toggling -->
 			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			    	<ul class="nav navbar-nav">
-			        	<li><a href="#">게시판</a></li>
-			        	<li class="active"><a href="#">글쓰기<span class="sr-only">(current)</span></a></li>
+			        	<li><a href="/Bulletin_Board/bulletin_board_main_page.do">게시판</a></li>
+			        	<li class="active"><a href="/Bulletin_Board/bulletin_board_write_page.do">글쓰기<span class="sr-only">(current)</span></a></li>
 			      	</ul>
 	
 					<ul class="nav navbar-nav navbar-right">
@@ -52,6 +52,8 @@
 					        <li class="dropdown">
 					        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= user_id %> <span class="caret"></span></a>
 					        	<ul class="dropdown-menu" role="menu">
+					        		<li><a href="">정보 수정</a></li>
+					        		<li class="divider"></li>
 					            	<li><a href="logout_action.do">로그아웃</a></li>
 					          	</ul>
 							</li>

@@ -49,8 +49,8 @@
 				<!-- Collect the nav links, forms, and other content for toggling -->
 			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			    	<ul class="nav navbar-nav">
-			        	<li class="active"><a href="#">게시판 <span class="sr-only">(current)</span></a></li>
-			        	<li><a href="#">글쓰기</a></li>
+			        	<li class="active"><a href="/Bulletin_Board/bulletin_board_main_page.do">게시판 <span class="sr-only">(current)</span></a></li>
+			        	<li><a href="/Bulletin_Board/bulletin_board_write_page.do">글쓰기</a></li>
 			      	</ul>
 	
 					<ul class="nav navbar-nav navbar-right">
@@ -58,6 +58,8 @@
 					        <li class="dropdown">
 					        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= user_id %> <span class="caret"></span></a>
 					        	<ul class="dropdown-menu" role="menu">
+					        		<li><a href="">정보 수정</a></li>
+					        		<li class="divider"></li>
 					            	<li><a href="logout_action.do">로그아웃</a></li>
 					          	</ul>
 							</li>
@@ -116,11 +118,10 @@
 		</table>
 		
 		<div class="comment_wrtie_container">
-			<form action="bulletin_board_detail_page_comment_action.do" method="post">
+			<form action="bulletin_board_detail_page_comment_action.do" method="post" onsubmit="return comment_empty_check();">
 				<input type="text" name="post_comment" placeholder="댓글">
 				<input type="submit" value="작성">
 				<input type="hidden" name="current_index" value=<c:out value="${post_detail.post_index }"/> />
-				<input type="hidden" name="current_parameter" value="<%=request.getQueryString() %>">
 			</form>
 			
 			<c:forEach items="${post_detail_comment }" var="post_detail_comment">
@@ -165,6 +166,15 @@
 				
 				document.body.append(form)
 				form.submit()
+			}
+			
+			function comment_empty_check() {
+				if ($('input[name=post_comment]').val() == '') {
+					$('input[name=post_comment]').focus()
+					return false
+				} else{
+					return true
+				}
 			}
 			
 			function comment_delete_confirm(comment_index) {

@@ -1,18 +1,15 @@
 package Bulletin.Board.Controller;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,23 +36,6 @@ public class maincontroller {
 	private CommentServiceImpl commentServiceImpl;
 	private static final Logger logger = LoggerFactory.getLogger(maincontroller.class);
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/homepage.do", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
-	}
-	
 	@RequestMapping(value = "/login_page.do") // redirect할 때 값을 주고받기위해 사용 RequestParam 및의 형식대로 해야 값이 없을 때 오류가 나지않음.
 	public ModelAndView login_page(HttpServletRequest request, @RequestParam(value="login_fail_message", required=false, defaultValue="") String login_fail_message,
 			@RequestParam(value="signup_result_message", required=false, defaultValue="") String signup_result_message) throws Exception {
@@ -79,8 +59,16 @@ public class maincontroller {
 		boolean result = (boolean) userServiceImpl.login(input_data);
 		
 		if (result) {
-			request.getSession().setAttribute("user_id", user_id);
-			mv = new ModelAndView("redirect:homepage.do");
+			HttpSession session = request.getSession();
+			session.setAttribute("user_id", user_id);
+			String prev_url = (String) session.getAttribute("Prev_Url");
+			
+			if (prev_url.equals("")) {
+				mv = new ModelAndView("redirect:bulletin_board_main_page.do");
+			} else {
+				mv = new ModelAndView("redirect:" + prev_url);
+				session.setAttribute("Prev_Url", "");
+			}
 		} else {
 			redirectAttributes.addFlashAttribute("login_fail_message", "login_fail");
 			mv = new ModelAndView("redirect:login_page.do");
@@ -240,13 +228,13 @@ public class maincontroller {
 	}
 	
 	@RequestMapping(value = "/bulletin_board_detail_page_comment_action.do")
-	public ModelAndView bulletin_board_detail_page_comment_action(String post_comment, String current_index, String current_parameter, HttpServletRequest data, RedirectAttributes redirectAttributes) throws Exception {
-		// 인터셉터 추가로 session id 체크
-		ModelAndView mv = new ModelAndView("redirect:bulletin_board_detail_page.do?" + current_parameter);
+	public ModelAndView bulletin_board_detail_page_comment_action(String post_comment, String current_index, HttpServletRequest data, RedirectAttributes redirectAttributes) throws Exception {
+		// 인터셉터 추가로 session id 체크					// 이전 url의 파라미터를 포함한 전체 url을 받아온다.
+		ModelAndView mv = new ModelAndView("redirect:"+ data.getHeader("referer"));
 		
 		String user_id = (String) data.getSession().getAttribute("user_id");
 		String post_index = current_index;
-		
+
 		if (post_index == null) {
 			redirectAttributes.addFlashAttribute("comment_write_fail", "comment_write_fail");
 		} else {
