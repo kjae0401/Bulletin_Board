@@ -63,11 +63,15 @@ public class maincontroller {
 			session.setAttribute("user_id", user_id);
 			String prev_url = (String) session.getAttribute("Prev_Url");
 			
-			if (prev_url.equals("")) {
+			try {
+				if (prev_url.equals("")) {
+					mv = new ModelAndView("redirect:bulletin_board_main_page.do");
+				} else {
+					mv = new ModelAndView("redirect:" + prev_url);
+					session.setAttribute("Prev_Url", "");
+				}
+			} catch (Exception e) {
 				mv = new ModelAndView("redirect:bulletin_board_main_page.do");
-			} else {
-				mv = new ModelAndView("redirect:" + prev_url);
-				session.setAttribute("Prev_Url", "");
 			}
 		} else {
 			redirectAttributes.addFlashAttribute("login_fail_message", "login_fail");
@@ -101,7 +105,6 @@ public class maincontroller {
 		return result;
 	}
 	
-	
 	@RequestMapping(value = "/signup_page_action.do")
 	public ModelAndView signup_page_action(String signup_id, String signup_password, String signup_email, RedirectAttributes redirectAttributes) throws Exception {
 		ModelAndView mv;
@@ -120,6 +123,45 @@ public class maincontroller {
 		mv = new ModelAndView("redirect:login_page.do");
 		
 		return mv;
+	}
+	
+	@RequestMapping(value = "/find_id_page.do")
+	public void find_id_page() throws Exception { }
+	
+	@ResponseBody
+	@RequestMapping(value = "/find_id_page_action.do")
+	public String find_id_page_action(HttpServletRequest httpServletRequest) throws Exception {
+		String query_data = httpServletRequest.getParameter("input_email");
+		String result = "";
+		
+		result = userServiceImpl.find_id_page_action(query_data);
+		return result;
+	}
+	
+	@RequestMapping(value = "/find_pwd_page.do")
+	public void find_pwd_page() throws Exception { }
+	
+	@ResponseBody
+	@RequestMapping(value = "/find_pwd_page_action.do")
+	public boolean find_pwd_page_action(HttpServletRequest httpServletRequest) throws Exception {
+		HashMap<String, String> query_data = new HashMap<String, String>();
+		query_data.put("input_id", httpServletRequest.getParameter("input_id"));
+		query_data.put("input_email", httpServletRequest.getParameter("input_email"));
+		boolean result = false;
+		
+		result = userServiceImpl.find_pwd_page_action(query_data);
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/find_pwd_page_last_action.do")
+	public boolean find_pwd_page_last_action(HttpServletRequest httpServletRequest) throws Exception {
+		HashMap<String, String> query_data = new HashMap<String, String>();
+		query_data.put("user_id", httpServletRequest.getParameter("user_id"));
+		query_data.put("input_pwd", SHA256.encrypt(httpServletRequest.getParameter("input_pwd")));
+
+		boolean result = userServiceImpl.find_pwd_page_last_action(query_data);
+		return result;
 	}
 	
 	@RequestMapping(value = "/bulletin_board_main_page.do", method=RequestMethod.GET)

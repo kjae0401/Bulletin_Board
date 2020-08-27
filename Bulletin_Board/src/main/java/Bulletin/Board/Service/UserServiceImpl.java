@@ -26,4 +26,19 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userDAO.signup(input_data);
 	}
+
+	public String find_id_page_action(String query_data) {
+		// TODO Auto-generated method stub
+		return userDAO.find_id_page_action(query_data);
+	}
+
+	public boolean find_pwd_page_action(HashMap<String, String> query_data) {
+		// TODO Auto-generated method stub
+		return userDAO.find_pwd_page_action(query_data);
+	}
+
+	public boolean find_pwd_page_last_action(HashMap<String, String> query_data) {
+		// TODO Auto-generated method stub
+		return userDAO.find_pwd_page_last_action(query_data);
+	}
 }

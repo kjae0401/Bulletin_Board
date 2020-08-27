@@ -84,3 +84,12 @@ SELECT comment_index, comment_writter_id, comment_contents, comment_time FROM bu
 
 post comment delete SQL :
 UPDATE bulletin_board_comment SET comment_available=0 WHERE comment_index=#{comment_index};
+
+find id SQL :
+SELECT user_id FROM bulletin_board_user WHERE user_email=#{query_data};
+
+find pwd -> id, email check SQL :
+SELECT EXISTS (SELECT * FROM bulletin_board_user WHERE user_id=#{input_id} and user_email=#{input_email}) AS Result;
+
+find pwd -> pwd change SQL :
+UPDATE bulletin_board_user SET user_password=#{input_pwd} WHERE user_id=#{user_id};

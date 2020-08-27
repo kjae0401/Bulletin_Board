@@ -20,19 +20,19 @@
 		<div class="signup-page">
 		  <div class="form">
 		    <form class="signup-form" method="post" action="signup_page_action.do" onsubmit="return signup_input_value_check()">
-		      <input type="text" name="signup_id" placeholder="ID"/>
-		      <p class="signup_id_fail_message"></p>
-		      
-		      <input type="password" name="signup_password" placeholder="Password"/>
-		      <p class="signup_password_fail_message"></p>
-		      
-		      <input type="password" name="signup_password_check" placeholder="Password 재확인"/>
-		      <p class="signup_password_check_fail_message"></p>
-		      
-		      <input type="email" name="signup_email" placeholder="Email"/>
-		      <p class="signup_email_fail_message"></p>
-		      
-		      <input class="submit_button" type="submit" value="가입하기"/>
+				<input type="text" name="signup_id" placeholder="ID"/>
+				<p class="signup_id_fail_message"></p>
+				
+				<input type="password" name="signup_password" placeholder="Password" autocomplete="new-password"/>
+				<p class="signup_password_fail_message"></p>
+				
+				<input type="password" name="signup_password_check" placeholder="Password 재확인"/>
+				<p class="signup_password_check_fail_message"></p>
+				
+				<input type="email" name="signup_email" placeholder="Email"/>
+				<p class="signup_email_fail_message"></p>
+						      
+				<input class="submit_button" type="submit" value="가입하기"/>
 		    </form>
 		  </div>
 		</div>

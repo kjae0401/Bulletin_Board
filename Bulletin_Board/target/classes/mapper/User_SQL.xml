@@ -18,4 +18,22 @@
 			INSERT INTO bulletin_board_user VALUE(#{signup_id}, #{signup_password}, #{signup_email})
 		]]>
 	</select>
+	
+	<select id="find_id_page_action" parameterType="String" resultType="String">
+		<![CDATA[
+			SELECT user_id FROM bulletin_board_user WHERE user_email=#{query_data};
+		]]>
+	</select>
+	
+	<select id="find_pwd_page_action" parameterType="hashmap" resultType="integer">
+		<![CDATA[
+			SELECT EXISTS (SELECT * FROM bulletin_board_user WHERE user_id=#{input_id} and user_email= #{input_email}) AS Result;
+		]]>
+	</select>
+	
+	<select id="find_pwd_page_last_action" parameterType="hashmap">
+		<![CDATA[
+			UPDATE bulletin_board_user SET user_password=#{input_pwd} WHERE user_id=#{user_id};
+		]]>
+	</select>
 </mapper>

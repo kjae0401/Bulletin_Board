@@ -33,19 +33,19 @@
 		      <input type="password" name="user_password" placeholder="Password"/>
 		      <input class="submit_button" type="submit" value="LOGIN"/>
 		      <p class="login_fail_message">
+		      <p class="message">Forgot your ID? <a href="javascript:void(0);" onclick="find_id_page();">CLICK HERE</a></p>
+		      <p class="message">Forgot your PASSWORD? <a href="javascript:void(0);" onclick="find_pwd_page();">CLICK HERE</a></p>
 		      <p class="message">Not registered? <a href="signup_page.do">Create an account</a></p>
 		    </form>
 		  </div>
 		</div>
-	    
 	    
 	    <script>
 	    	var login_fail_message = "${login_fail_message}"
 	    	
 	    	if (login_fail_message == 'login_fail')
 	    		$('.login_fail_message').text('가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.')
-	    </script>
-	    <script>
+
 	    	function login_input_value_check() {
 	    		if ($('input[name=user_id]').val() == "") {
 	    			$('.login_fail_message').text('아이디를 입력해주세요.')
@@ -59,6 +59,42 @@
 	    		}
 	    		
 	    		return true
+	    	}
+	    	
+	    	var find_id_page_history = null
+	    	
+	    	function find_id_page() {
+	    		var url = '/Bulletin_Board/find_id_page.do'
+	    		var name = '_blank'
+	    		var specs = "'resizable=no', 'width=160', 'height=90'"
+	    		
+	    		if (find_id_page_history == null) {
+	    			find_id_page_history = window.open(url, name, specs)
+	    		} else {
+	    			if (find_id_page_history.closed) {
+	    				find_id_page_history = window.open(url, name, specs)
+	    			}
+	    		}
+	    		
+	    		find_id_page_history.focus()
+	    	}
+	    	
+	    	var find_pwd_page_history = null
+	    	
+	    	function find_pwd_page() {
+	    		var url = '/Bulletin_Board/find_pwd_page.do'
+	    		var name = '_blank'
+	    		var specs = "'resizable=no', 'width=160', 'height=90'"
+	    		
+	    		if (find_pwd_page_history == null) {
+	    			find_pwd_page_history = window.open(url, name, specs)
+	    		} else {
+	    			if (find_pwd_page_history.closed) {
+	    				find_pwd_page_history = window.open(url, name, specs)
+	    			}
+	    		}
+	    		
+	    		find_pwd_page_history.focus()
 	    	}
 	    </script>
 	</body>

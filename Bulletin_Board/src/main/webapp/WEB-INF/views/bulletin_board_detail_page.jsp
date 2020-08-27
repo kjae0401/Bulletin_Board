@@ -58,7 +58,9 @@
 					        <li class="dropdown">
 					        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= user_id %> <span class="caret"></span></a>
 					        	<ul class="dropdown-menu" role="menu">
-					        		<li><a href="">정보 수정</a></li>
+					        		<li class="dropdown-header">내 정보</li>
+					        		<li><a href="#">비밀번호 수정</a></li>
+					        		<li><a href="#">이메일 수정</a></li>
 					        		<li class="divider"></li>
 					            	<li><a href="logout_action.do">로그아웃</a></li>
 					          	</ul>
@@ -118,7 +120,7 @@
 		</table>
 		
 		<div class="comment_wrtie_container">
-			<form action="bulletin_board_detail_page_comment_action.do" method="post" onsubmit="return comment_empty_check();">
+			<form action="bulletin_board_detail_page_comment_action.do" method="post" onsubmit="return comment_empty_check();" autocomplete="off">
 				<input type="text" name="post_comment" placeholder="댓글">
 				<input type="submit" value="작성">
 				<input type="hidden" name="current_index" value=<c:out value="${post_detail.post_index }"/> />

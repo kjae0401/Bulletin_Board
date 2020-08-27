@@ -52,7 +52,9 @@
 					        <li class="dropdown">
 					        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= user_id %> <span class="caret"></span></a>
 					        	<ul class="dropdown-menu" role="menu">
-					        		<li><a href="">정보 수정</a></li>
+					        		<li class="dropdown-header">내 정보</li>
+					        		<li><a href="#">비밀번호 수정</a></li>
+					        		<li><a href="#">이메일 수정</a></li>
 					        		<li class="divider"></li>
 					            	<li><a href="logout_action.do">로그아웃</a></li>
 					          	</ul>
