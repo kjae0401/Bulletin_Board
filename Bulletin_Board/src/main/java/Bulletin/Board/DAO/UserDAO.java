@@ -9,7 +9,14 @@ public class UserDAO extends AbstractDAO {
 
 	public boolean login(HashMap<String, String> input_data) {
 		// TODO Auto-generated method stub
-		boolean result = (selectOne("User.login_query", input_data).toString().equals("1")) ? true : false;
+		boolean result;
+		
+		try {
+			result = (selectOne("User.login_query", input_data).toString().equals("1")) ? true : false;
+		} catch(Exception e) {
+			result = false;
+		}
+		
 		return result;
 	}
 
@@ -53,6 +60,20 @@ public class UserDAO extends AbstractDAO {
 		
 		try {
 			update("User.find_pwd_page_last_action", query_data);
+			result = true;
+		} catch (Exception e) {
+			result = false;
+		}
+		
+		return result;
+	}
+
+	public boolean change_email_page_action(HashMap<String, String> email_change_query_data) {
+		// TODO Auto-generated method stub
+		boolean result;
+		
+		try {
+			update("User.change_email_page_action", email_change_query_data);
 			result = true;
 		} catch (Exception e) {
 			result = false;

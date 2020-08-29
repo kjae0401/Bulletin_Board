@@ -164,6 +164,52 @@ public class maincontroller {
 		return result;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/change_pwd_page_action.do")
+	public String change_pwd_page_action(HttpServletRequest httpServletRequest) throws Exception {
+		String result = "";
+		HashMap<String, String> infomation_check_query_data = new HashMap<String, String>();
+		infomation_check_query_data.put("user_id", httpServletRequest.getParameter("user_id"));
+		infomation_check_query_data.put("user_password", SHA256.encrypt(httpServletRequest.getParameter("change_current_pwd")));
+		boolean information_flag = userServiceImpl.login(infomation_check_query_data);
+
+		if (!information_flag) {
+			result = "pwd_fail";
+		} else {
+			HashMap<String, String> pwd_change_query_data = new HashMap<String, String>();
+			pwd_change_query_data.put("user_id", httpServletRequest.getParameter("user_id"));
+			pwd_change_query_data.put("input_pwd", SHA256.encrypt(httpServletRequest.getParameter("change_input_pwd")));
+			boolean information_change_flag = userServiceImpl.find_pwd_page_last_action(pwd_change_query_data);
+		
+			if (information_change_flag) {
+				result = "success";
+				httpServletRequest.getSession().removeAttribute("user_id");
+			} else {
+				result = "fail";
+			}
+		}
+		
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/change_email_page_action.do")
+	public String change_email_page_action(HttpServletRequest httpServletRequest) throws Exception {
+		String result = "";
+		HashMap<String, String> email_change_query_data = new HashMap<String, String>();
+		email_change_query_data.put("user_id", httpServletRequest.getParameter("user_id"));
+		email_change_query_data.put("change_input_email", httpServletRequest.getParameter("change_input_email"));
+		boolean flag = userServiceImpl.change_email_page_action(email_change_query_data);
+		
+		if (flag) {
+			result = "success";
+		} else {
+			result = "fail";
+		}
+		
+		return result;
+	}
+	
 	@RequestMapping(value = "/bulletin_board_main_page.do", method=RequestMethod.GET)
 	public ModelAndView bulletin_board_main_page(@RequestParam(required=false, value="nowPage") String nowPage, @RequestParam(required=false, value="countPerPage") String countPerPage,
 			HttpServletRequest post_keyword, @RequestParam(value="post_write_message", required=false, defaultValue="") String post_write_message,

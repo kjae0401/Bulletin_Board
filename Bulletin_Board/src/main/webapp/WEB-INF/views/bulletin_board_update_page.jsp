@@ -53,8 +53,8 @@
 					        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><%= user_id %> <span class="caret"></span></a>
 					        	<ul class="dropdown-menu" role="menu">
 					        		<li class="dropdown-header">내 정보</li>
-					        		<li><a href="#">비밀번호 수정</a></li>
-					        		<li><a href="#">이메일 수정</a></li>
+					        		<li><a href="javascript:void(0)" data-toggle="modal" onclick="change_pwd_button()">비밀번호 수정</a></li>
+					        		<li><a href="javascript:void(0)" data-toggle="modal" onclick="change_email_button()">이메일 수정</a></li>
 					        		<li class="divider"></li>
 					            	<li><a href="logout_action.do">로그아웃</a></li>
 					          	</ul>
@@ -102,8 +102,17 @@
 			</form>
 		</table>
 		
+		<jsp:include page="change_pwd_page.jsp"></jsp:include>
+		<jsp:include page="change_email_page.jsp"></jsp:include>
+		
 		<script>
+			function change_pwd_button() {
+				$("#change_pwd_modal").modal()
+			}
 			
+			function change_email_button() {
+				$("#change_email_modal").modal()
+			}
 		</script>
 	</body>
 </html>

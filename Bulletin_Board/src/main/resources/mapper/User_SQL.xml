@@ -36,4 +36,10 @@
 			UPDATE bulletin_board_user SET user_password=#{input_pwd} WHERE user_id=#{user_id};
 		]]>
 	</select>
+	
+	<select id="change_email_page_action" parameterType="hashmap">
+		<![CDATA[
+			UPDATE bulletin_board_user SET user_email=#{change_input_email} WHERE user_id=#{user_id};
+		]]>
+	</select>
 </mapper>
