@@ -12,16 +12,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
 		<!-- custom css -->
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/login_page.css">
-		
-		<script>
-			var signup_result_message = "${signup_result_message}"
-			
-			if (signup_result_message == 'signup_success')
-				alert('회원 가입에 성공하였습니다. 입력한 이메일로 인증 메일이 발송됩니다.')
-			else if (signup_result_message == 'signup_fail')
-				alert('회원 가입에 실패하였습니다. 다시 시도해주세요.')
-		</script>
-		
+				
 		<title>Log-In</title>
 	</head>
 	

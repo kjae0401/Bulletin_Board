@@ -104,24 +104,16 @@ public class maincontroller {
 		return result;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/signup_page_action.do")
-	public ModelAndView signup_page_action(String signup_id, String signup_password, String signup_email, RedirectAttributes redirectAttributes) throws Exception {
-		ModelAndView mv;
-		
+	public String signup_page_action(String signup_id, String signup_password, String signup_email) throws Exception {
 		HashMap<String, String> input_data = new HashMap<String, String>();
 		input_data.put("signup_id", signup_id);
 		input_data.put("signup_password", SHA256.encrypt(signup_password));
 		input_data.put("signup_email", signup_email);
-		boolean result = (boolean) userServiceImpl.signup(input_data);
-		
-		if (result) {
-			redirectAttributes.addFlashAttribute("signup_result_message", "signup_success");
-		} else {
-			redirectAttributes.addFlashAttribute("signup_result_message", "signup_fail");
-		}
-		mv = new ModelAndView("redirect:login_page.do");
-		
-		return mv;
+		String result = ((boolean) userServiceImpl.signup(input_data)) ? "success" : "fail";
+				
+		return result;
 	}
 	
 	@RequestMapping(value = "/find_id_page.do")

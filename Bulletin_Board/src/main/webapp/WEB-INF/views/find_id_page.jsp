@@ -12,7 +12,9 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
 		<!-- custom css -->
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/find_id_page.css">
-				
+		<!-- custom js -->
+		<script src="${pageContext.request.contextPath}/js/page_close_function.js"></script>
+		
 		<title>Forgot yout ID?</title>
 	</head>
 	
@@ -57,10 +59,6 @@
 	    		}
 	    		
 	    		return false
-	    	}
-	    	
-	    	function page_close() {
-	    		window.open('about:blank', '_self').self.close()
 	    	}
 	    </script>
 	</body>

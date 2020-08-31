@@ -12,6 +12,8 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
 		<!-- custom css -->
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/signup_page.css">
+		<!-- custom js -->
+		<script src="${pageContext.request.contextPath}/js/page_close_function.js"></script>
 		
 		<title>Sign-Up</title>
 	</head>
@@ -58,7 +60,23 @@
 			    	$(input_class_name[flag]).focus()
 			    	return false
 	    		} else {
-	    			return true
+	    			$.ajax({
+						url : "/Bulletin_Board/signup_page_action.do",
+						type : "post",
+						data : {"signup_id" : $(input_class_name[0]).val(), "signup_password" : $(input_class_name[1]).val(), "signup_email" : $(input_class_name[3]).val()},
+						dataType : "html",
+						success : function(result) {
+							if (result == 'success') {
+								alert('회원가입에 성공하였습니다.')
+								page_close()
+							} else {
+								alert('회원가입에 실패하였습니다. 다시 시도해주세요.')
+								location.reload()
+							}
+						}
+					})
+	    			
+	    			return false
 	    		}
 	    	}
 		    
