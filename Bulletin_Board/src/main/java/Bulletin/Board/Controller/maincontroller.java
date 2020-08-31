@@ -36,6 +36,11 @@ public class maincontroller {
 	private CommentServiceImpl commentServiceImpl;
 	private static final Logger logger = LoggerFactory.getLogger(maincontroller.class);
 	
+	@RequestMapping(value = "/error_page.do")
+	public String error_page() {
+		return "error_page";
+	}
+	
 	@RequestMapping(value = "/login_page.do") // redirect할 때 값을 주고받기위해 사용 RequestParam 및의 형식대로 해야 값이 없을 때 오류가 나지않음.
 	public ModelAndView login_page(HttpServletRequest request,
 			@RequestParam(value="signup_result_message", required=false, defaultValue="") String signup_result_message) throws Exception {
