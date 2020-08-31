@@ -37,9 +37,9 @@ public class UserServiceImpl implements UserService {
 		return userDAO.find_pwd_page_action(query_data);
 	}
 
-	public boolean find_pwd_page_last_action(HashMap<String, String> query_data) {
+	public boolean change_pwd_action(HashMap<String, String> query_data) {
 		// TODO Auto-generated method stub
-		return userDAO.find_pwd_page_last_action(query_data);
+		return userDAO.change_pwd_action(query_data);
 	}
 
 	public boolean change_email_page_action(HashMap<String, String> email_change_query_data) {

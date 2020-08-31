@@ -54,12 +54,12 @@ public class UserDAO extends AbstractDAO {
 		return result;
 	}
 
-	public boolean find_pwd_page_last_action(HashMap<String, String> query_data) {
+	public boolean change_pwd_action(HashMap<String, String> query_data) {
 		// TODO Auto-generated method stub
 		boolean result;
 		
 		try {
-			update("User.find_pwd_page_last_action", query_data);
+			update("User.change_pwd_action", query_data);
 			result = true;
 		} catch (Exception e) {
 			result = false;

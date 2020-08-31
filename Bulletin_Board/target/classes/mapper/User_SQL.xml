@@ -31,7 +31,7 @@
 		]]>
 	</select>
 	
-	<select id="find_pwd_page_last_action" parameterType="hashmap">
+	<select id="change_pwd_action" parameterType="hashmap">
 		<![CDATA[
 			UPDATE bulletin_board_user SET user_password=#{input_pwd} WHERE user_id=#{user_id};
 		]]>

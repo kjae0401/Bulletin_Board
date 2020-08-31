@@ -151,7 +151,7 @@ public class maincontroller {
 		query_data.put("user_id", httpServletRequest.getParameter("user_id"));
 		query_data.put("input_pwd", SHA256.encrypt(httpServletRequest.getParameter("input_pwd")));
 
-		boolean result = userServiceImpl.find_pwd_page_last_action(query_data);
+		boolean result = userServiceImpl.change_pwd_action(query_data);
 		return result;
 	}
 	
@@ -170,7 +170,7 @@ public class maincontroller {
 			HashMap<String, String> pwd_change_query_data = new HashMap<String, String>();
 			pwd_change_query_data.put("user_id", httpServletRequest.getParameter("user_id"));
 			pwd_change_query_data.put("input_pwd", SHA256.encrypt(httpServletRequest.getParameter("change_input_pwd")));
-			boolean information_change_flag = userServiceImpl.find_pwd_page_last_action(pwd_change_query_data);
+			boolean information_change_flag = userServiceImpl.change_pwd_action(pwd_change_query_data);
 		
 			if (information_change_flag) {
 				result = "success";
