@@ -82,7 +82,7 @@
 				
 			<thead>
 				<tr>
-					<th colspan="5"><div class="text-ellipsis"><p class="post_title"><c:out value="${post_detail.post_title }"/></p></div></th>
+					<th colspan="5"><div class="text-ellipsis"><p class="post_title"><c:out value="${post_detail.post_title }" escapeXml="false"/></p></div></th>
 				</tr>
 			</thead>
 			
@@ -104,7 +104,7 @@
 				
 				<tr>
 					<td colspan="1">내용</td>
-					<td colspan="4"><label class="post_contents"><c:out value="${post_detail.post_contents }"/></label></td>
+					<td colspan="4"><label class="post_contents"><c:out value="${post_detail.post_contents }" escapeXml="false"/></label></td>
 				</tr>
 
 				<c:if test="${Writer}">
