@@ -94,7 +94,8 @@ SELECT EXISTS (SELECT * FROM bulletin_board_user WHERE user_id=#{input_id} and u
 find pwd -> pwd change SQL :
 UPDATE bulletin_board_user SET user_password=#{input_pwd} WHERE user_id=#{user_id};
 
-MyBaits User_SQL.xml (id="login_query") -> 로그인과, 비밀번호 변경 시 정보 체크하는 부분에서 사용. 추후 관련 메소드 명 및 id 변경 예정
+MyBaits User_SQL.xml (id="login_query") -> 로그인과, 비밀번호 변경 시 정보 체크하는 부분에서 사용. 추후 관련 메소드 명 및 id 변경 예정-> id_pwd_check로 통합
+
 MyBatis User_SQL.xml (id="find_pwd_page_last_action") -> 비밀번호를 변경하는 쿼리이므로 비밀번호 변경에 관련된 비밀번호 찾기와 정보 수정 부분에서의 비밀번호 변경에서 요구하는바 추후 메소드 명 및 id 변경 예정
 
 email change SQL :

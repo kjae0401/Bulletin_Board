@@ -12,7 +12,7 @@ public class UserDAO extends AbstractDAO {
 		boolean result;
 		
 		try {
-			result = (selectOne("User.login_query", input_data).toString().equals("1")) ? true : false;
+			result = (selectOne("User.id_pwd_check", input_data).toString().equals("1")) ? true : false;
 		} catch(Exception e) {
 			result = false;
 		}

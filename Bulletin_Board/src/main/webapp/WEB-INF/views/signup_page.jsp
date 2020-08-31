@@ -38,6 +38,10 @@
 		</div>
 
 	    <script>
+		    $(window).load(function () {
+	    		window.resizeTo(560, 720)
+	    	})
+	    
 		    var input_class_name = new Array("input[name=signup_id]", "input[name=signup_password]", "input[name=signup_password_check]", "input[name=signup_email]")
 			var p_class_name = new Array(".signup_id_fail_message", ".signup_password_fail_message", ".signup_password_check_fail_message", ".signup_email_fail_message")
 		    var flag

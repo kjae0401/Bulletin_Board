@@ -14,8 +14,7 @@ public class authInterceptor extends HandlerInterceptorAdapter {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		Object obj = session.getAttribute("user_id");
-		session.setAttribute("Prev_Url", request.getHeader("referer"));
-		
+				
 		if (obj == null) {
 			response.sendRedirect("/Bulletin_Board/login_page.do");
 			return false;

@@ -28,24 +28,19 @@
 	<body>
 		<div class="login-page">
 		  <div class="form">
-		    <form class="login-form" method="post" action="login_page_action.do" onsubmit="return login_input_value_check()">
+		    <form class="login-form" method="post" onsubmit="return login_input_value_check()">
 		      <input type="text" name="user_id" placeholder="ID"/>
 		      <input type="password" name="user_password" placeholder="Password"/>
 		      <input class="submit_button" type="submit" value="LOGIN"/>
 		      <p class="login_fail_message">
 		      <p class="message">Forgot your ID? <a href="javascript:void(0);" onclick="find_id_page();">CLICK HERE</a></p>
 		      <p class="message">Forgot your PASSWORD? <a href="javascript:void(0);" onclick="find_pwd_page();">CLICK HERE</a></p>
-		      <p class="message">Not registered? <a href="signup_page.do">Create an account</a></p>
+		      <p class="message">Not registered? <a href="javascript:void(0)" onclick="signup_page()">Create an account</a></p>
 		    </form>
 		  </div>
 		</div>
-	    
-	    <script>
-	    	var login_fail_message = "${login_fail_message}"
-	    	
-	    	if (login_fail_message == 'login_fail')
-	    		$('.login_fail_message').text('가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.')
 
+	    <script>
 	    	function login_input_value_check() {
 	    		if ($('input[name=user_id]').val() == "") {
 	    			$('.login_fail_message').text('아이디를 입력해주세요.')
@@ -58,7 +53,21 @@
 	    			return false
 	    		}
 	    		
-	    		return true
+	    		$.ajax({
+					url : "/Bulletin_Board/login_page_action.do",
+					type : "post",
+					data : {"user_id" : $('input[name=user_id]').val(), "user_password" : $('input[name=user_password]').val()},
+					dataType : "html",
+					success : function(result) {
+						if (result == '') {
+							$('.login_fail_message').text('가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.')
+						} else {
+							location.href = result
+						}
+					}
+				})
+	    		
+	    		return false
 	    	}
 	    	
 	    	var find_id_page_history = null
@@ -95,6 +104,24 @@
 	    		}
 	    		
 	    		find_pwd_page_history.focus()
+	    	}
+	    	
+	    	var signup_page_history = null
+	    	
+	    	function signup_page() {
+	    		var url = '/Bulletin_Board/signup_page.do'
+	    		var name = '_blank'
+	    		var specs = "'resizable=no', 'width=160', 'height=90'"
+	    		
+	    		if (signup_page_history == null) {
+	    			signup_page_history = window.open(url, name, specs)
+	    		} else {
+	    			if (signup_page_history.closed) {
+	    				signup_page_history = window.open(url, name, specs)
+	    			}
+	    		}
+	    		
+	    		signup_page_history.focus()
 	    	}
 	    </script>
 	</body>

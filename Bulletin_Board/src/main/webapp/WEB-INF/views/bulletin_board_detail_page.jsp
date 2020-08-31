@@ -66,7 +66,7 @@
 					          	</ul>
 							</li>
 						<% } else { %>
-							<li><a href="login_page.do">로그인</a></li>
+							<li><a href="javascript:void(0)" onclick="go_login_page()">로그인</a></li>
 						<% } %>
 					</ul>
 		    	</div><!-- /.navbar-collapse -->
@@ -226,6 +226,10 @@
 			
 			function change_email_button() {
 				$("#change_email_modal").modal()
+			}
+			
+			function go_login_page() {
+				location.href="login_page.do"
 			}
 		</script>
 	</body>

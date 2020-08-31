@@ -12,7 +12,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDAO userDAO;
 
-	public boolean login(HashMap<String, String> input_data) {
+	public boolean id_pwd_check(HashMap<String, String> input_data) {
 		// TODO Auto-generated method stub
 		return userDAO.login(input_data);
 	}

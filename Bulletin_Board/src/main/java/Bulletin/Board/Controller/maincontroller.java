@@ -37,26 +37,28 @@ public class maincontroller {
 	private static final Logger logger = LoggerFactory.getLogger(maincontroller.class);
 	
 	@RequestMapping(value = "/login_page.do") // redirect할 때 값을 주고받기위해 사용 RequestParam 및의 형식대로 해야 값이 없을 때 오류가 나지않음.
-	public ModelAndView login_page(HttpServletRequest request, @RequestParam(value="login_fail_message", required=false, defaultValue="") String login_fail_message,
+	public ModelAndView login_page(HttpServletRequest request,
 			@RequestParam(value="signup_result_message", required=false, defaultValue="") String signup_result_message) throws Exception {
 		ModelAndView mv = new ModelAndView("login_page");
 		
-		if (!login_fail_message.equals(""))
-			mv.addObject("login_fail_message", login_fail_message);
 		if (!signup_result_message.equals(""))
 			mv.addObject("signup_result_message", signup_result_message);
+		
+		request.getSession().setAttribute("Prev_Url", request.getHeader("referer"));
 		
 		return mv;
 	}
 	
-	@RequestMapping(value = "/login_page_action.do")							// redirect 시 값 전달을 위해 사용
-	public ModelAndView login_page_action(String user_id, String user_password, RedirectAttributes redirectAttributes, HttpServletRequest request) throws Exception {
-		ModelAndView mv;
+	@ResponseBody
+	@RequestMapping(value = "/login_page_action.do")
+	public String login_page_action(String user_id, String user_password, HttpServletRequest request) throws Exception {
+		String model = "";
+		boolean result = false;
 		
 		HashMap<String, String> input_data = new HashMap<String, String>();
 		input_data.put("user_id", user_id);
 		input_data.put("user_password", SHA256.encrypt(user_password));
-		boolean result = (boolean) userServiceImpl.login(input_data);
+		result = userServiceImpl.id_pwd_check(input_data);
 		
 		if (result) {
 			HttpSession session = request.getSession();
@@ -65,20 +67,17 @@ public class maincontroller {
 			
 			try {
 				if (prev_url.equals("")) {
-					mv = new ModelAndView("redirect:bulletin_board_main_page.do");
+					model = "bulletin_board_main_page.do";
 				} else {
-					mv = new ModelAndView("redirect:" + prev_url);
+					model = prev_url;
 					session.setAttribute("Prev_Url", "");
 				}
 			} catch (Exception e) {
-				mv = new ModelAndView("redirect:bulletin_board_main_page.do");
+				model = "bulletin_board_main_page.do";
 			}
-		} else {
-			redirectAttributes.addFlashAttribute("login_fail_message", "login_fail");
-			mv = new ModelAndView("redirect:login_page.do");
 		}
 			
-		return mv;
+		return model;
 	}
 	
 	@RequestMapping(value = "/logout_action.do")
@@ -171,7 +170,7 @@ public class maincontroller {
 		HashMap<String, String> infomation_check_query_data = new HashMap<String, String>();
 		infomation_check_query_data.put("user_id", httpServletRequest.getParameter("user_id"));
 		infomation_check_query_data.put("user_password", SHA256.encrypt(httpServletRequest.getParameter("change_current_pwd")));
-		boolean information_flag = userServiceImpl.login(infomation_check_query_data);
+		boolean information_flag = userServiceImpl.id_pwd_check(infomation_check_query_data);
 
 		if (!information_flag) {
 			result = "pwd_fail";
