@@ -41,7 +41,7 @@
 
 	    <script>
 		    $(window).load(function () {
-	    		window.resizeTo(560, 720)
+	    		window.resizeTo(560, 760)
 	    	})
 	    
 		    var input_class_name = new Array("input[name=signup_id]", "input[name=signup_password]", "input[name=signup_password_check]", "input[name=signup_email]")
@@ -63,7 +63,7 @@
 	    			$.ajax({
 						url : "/Bulletin_Board/signup_page_action.do",
 						type : "post",
-						data : {"signup_id" : $(input_class_name[0]).val(), "signup_password" : $(input_class_name[1]).val(), "signup_email" : $(input_class_name[3]).val()},
+						data : {"signup_id" : $(input_class_name[0]).val(), "signup_password" : $(input_class_name[1]).val(), "signup_password_check" : $(input_class_name[2]).val(), "signup_email" : $(input_class_name[3]).val()},
 						dataType : "html",
 						success : function(result) {
 							if (result == 'success') {
@@ -97,8 +97,8 @@
 						type : "post",
 						data : {"signup_input_id" : id},
 						async: false,
-						success : function(data) {
-							if (data == 1) {
+						success : function(result) {
+							if (result == 1) {
 								$(p_class_name[0]).text('이미 사용중인 아이디입니다.')
 								$(p_class_name[0]).attr("style", "color:red")
 							} else {

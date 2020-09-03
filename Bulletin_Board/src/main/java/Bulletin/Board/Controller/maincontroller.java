@@ -22,6 +22,8 @@ import Bulletin.Board.Service.PostServiceImpl;
 import Bulletin.Board.Service.UserServiceImpl;
 import Bulletin.Board.Util.Pagination;
 import Bulletin.Board.Util.SHA256;
+import Bulletin.Board.DaoValidation.UserDaoValidation;
+import Bulletin.Board.DaoValidation.PostDaoValidation;
 
 /**
  * Handles requests for the application home page.
@@ -41,14 +43,9 @@ public class maincontroller {
 		return "error_page";
 	}
 	
-	@RequestMapping(value = "/login_page.do") // redirect할 때 값을 주고받기위해 사용 RequestParam 및의 형식대로 해야 값이 없을 때 오류가 나지않음.
-	public ModelAndView login_page(HttpServletRequest request,
-			@RequestParam(value="signup_result_message", required=false, defaultValue="") String signup_result_message) throws Exception {
+	@RequestMapping(value = "/login_page.do")
+	public ModelAndView login_page(HttpServletRequest request) throws Exception {
 		ModelAndView mv = new ModelAndView("login_page");
-		
-		if (!signup_result_message.equals(""))
-			mv.addObject("signup_result_message", signup_result_message);
-		
 		request.getSession().setAttribute("Prev_Url", request.getHeader("referer"));
 		
 		return mv;
@@ -57,7 +54,7 @@ public class maincontroller {
 	@ResponseBody
 	@RequestMapping(value = "/login_page_action.do")
 	public String login_page_action(String user_id, String user_password, HttpServletRequest request) throws Exception {
-		String model = "";
+		String view = "";
 		boolean result = false;
 		
 		HashMap<String, String> input_data = new HashMap<String, String>();
@@ -72,17 +69,17 @@ public class maincontroller {
 			
 			try {
 				if (prev_url.equals("")) {
-					model = "bulletin_board_main_page.do";
+					view = "bulletin_board_main_page.do";
 				} else {
-					model = prev_url;
+					view = prev_url;
 					session.setAttribute("Prev_Url", "");
 				}
 			} catch (Exception e) {
-				model = "bulletin_board_main_page.do";
+				view = "bulletin_board_main_page.do";
 			}
 		}
 			
-		return model;
+		return view;
 	}
 	
 	@RequestMapping(value = "/logout_action.do")
@@ -103,20 +100,28 @@ public class maincontroller {
 	// id 중복 체크를 위한 메소드
 	@ResponseBody
 	@RequestMapping(value = "/signup_page_idcheck.do")
-	public int signup_page_idcheck(HttpServletRequest httpServletRequest) throws Exception {
-		String query_data = httpServletRequest.getParameter("signup_input_id");
+	public int signup_page_idcheck(String signup_input_id) throws Exception {
+		String query_data = signup_input_id;
 		int result = userServiceImpl.signup_page_idcheck(query_data);
+		
 		return result;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/signup_page_action.do")
-	public String signup_page_action(String signup_id, String signup_password, String signup_email) throws Exception {
+	public String signup_page_action(String signup_id, String signup_password, String signup_password_check, String signup_email) throws Exception {
+		String result = UserDaoValidation.signup_validation(signup_id, signup_password, signup_password_check, signup_email);
+		
+		if (result.equals("fail")) {
+			return result;
+		}
+		
+		result = "";
 		HashMap<String, String> input_data = new HashMap<String, String>();
 		input_data.put("signup_id", signup_id);
 		input_data.put("signup_password", SHA256.encrypt(signup_password));
 		input_data.put("signup_email", signup_email);
-		String result = ((boolean) userServiceImpl.signup(input_data)) ? "success" : "fail";
+		result = ((boolean) userServiceImpl.signup(input_data)) ? "success" : "fail";
 				
 		return result;
 	}
@@ -162,19 +167,47 @@ public class maincontroller {
 	
 	@ResponseBody
 	@RequestMapping(value = "/change_pwd_page_action.do")
-	public String change_pwd_page_action(HttpServletRequest httpServletRequest) throws Exception {
+	public String change_pwd_page_action(HttpServletRequest httpServletRequest, String user_id, String change_current_pwd, String change_input_pwd,
+			String change_input_pwd_check) throws Exception {
 		String result = "";
+
+		switch (UserDaoValidation.change_pwd_validation(change_current_pwd, change_input_pwd, change_input_pwd_check)) {
+			case "change_current_pwd empty":
+				result = "change_current_pwd empty";
+				return result;
+				
+			case "change_input_pwd emtpy":
+				result = "change_input_pwd emtpy";
+				return result;
+				
+			case "change_input_pwd_check empty":
+				result = "change_input_pwd_check empty";
+				return result;
+				
+			case "change_input_pwd pattern error":
+				result = "change_input_pwd pattern error";
+				return result;
+				
+			case "change_input_pwd not equals":
+				result = "change_input_pwd not equals";
+				return result;
+				
+			case "validation success":
+				result = "validation success";
+				break;
+		}
+		
 		HashMap<String, String> infomation_check_query_data = new HashMap<String, String>();
-		infomation_check_query_data.put("user_id", httpServletRequest.getParameter("user_id"));
-		infomation_check_query_data.put("user_password", SHA256.encrypt(httpServletRequest.getParameter("change_current_pwd")));
+		infomation_check_query_data.put("user_id", user_id);
+		infomation_check_query_data.put("user_password", SHA256.encrypt(change_current_pwd));
 		boolean information_flag = userServiceImpl.id_pwd_check(infomation_check_query_data);
 
 		if (!information_flag) {
 			result = "pwd_fail";
 		} else {
 			HashMap<String, String> pwd_change_query_data = new HashMap<String, String>();
-			pwd_change_query_data.put("user_id", httpServletRequest.getParameter("user_id"));
-			pwd_change_query_data.put("input_pwd", SHA256.encrypt(httpServletRequest.getParameter("change_input_pwd")));
+			pwd_change_query_data.put("user_id", user_id);
+			pwd_change_query_data.put("input_pwd", SHA256.encrypt(change_input_pwd));
 			boolean information_change_flag = userServiceImpl.change_pwd_action(pwd_change_query_data);
 		
 			if (information_change_flag) {
@@ -358,18 +391,23 @@ public class maincontroller {
 	@RequestMapping(value = "/bulletin_board_write_page_action.do")
 	public ModelAndView bulletin_board_write_page_action(String post_title, String post_contents, HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
 		ModelAndView mv = new ModelAndView("redirect:bulletin_board_main_page.do");
+		boolean validation_flag = PostDaoValidation.post_write_validation((String) request.getSession().getAttribute("user_id"), post_title, post_contents);
 		
-		HashMap<String, String> post_write_data = new HashMap<String, String>();
-		post_write_data.put("post_writter_id", (String) request.getSession().getAttribute("user_id"));
-		post_write_data.put("post_title", post_title);
-		post_write_data.put("post_contents", post_contents);
-		
-		boolean flag = postServiceImpl.post_write(post_write_data);
-		
-		if (flag)
-			redirectAttributes.addFlashAttribute("post_write_message", "post_write_success");
-		else
+		if (!validation_flag) {
 			redirectAttributes.addFlashAttribute("post_write_message", "post_write_fail");
+		} else {
+			HashMap<String, String> post_write_data = new HashMap<String, String>();
+			post_write_data.put("post_writter_id", (String) request.getSession().getAttribute("user_id"));
+			post_write_data.put("post_title", post_title);
+			post_write_data.put("post_contents", post_contents);
+			
+			boolean flag = postServiceImpl.post_write(post_write_data);
+			
+			if (flag)
+				redirectAttributes.addFlashAttribute("post_write_message", "post_write_success");
+			else
+				redirectAttributes.addFlashAttribute("post_write_message", "post_write_fail");
+		}
 		
 		return mv;
 	}
@@ -402,19 +440,25 @@ public class maincontroller {
 	@RequestMapping(value = "bulletin_board_update_page_action.do")
 	public ModelAndView bulletin_board_update_page_action(String post_index, String post_contents, HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
 		ModelAndView mv;
+		boolean validation_flag = PostDaoValidation.post_update_validation(post_index, post_contents);
 		
-		HashMap<String, String> update_data = new HashMap<String, String>();
-		update_data.put("post_index", post_index);
-		update_data.put("post_contents", post_contents);
-		boolean result = postServiceImpl.post_contents_update(update_data);
-		
-		if (result) {
-			String url = "redirect:bulletin_board_detail_page.do?post_index=" + post_index + "&post_writter_id=" + (String) request.getSession().getAttribute("user_id");
-			mv = new ModelAndView(url);
-			
-		} else {
+		if (!validation_flag) {
 			mv = new ModelAndView("redirect:bulletin_board_main_page.do");
 			redirectAttributes.addFlashAttribute("post_update_message", "post_update_fail");
+		} else {
+			HashMap<String, String> update_data = new HashMap<String, String>();
+			update_data.put("post_index", post_index);
+			update_data.put("post_contents", post_contents);
+			boolean result = postServiceImpl.post_contents_update(update_data);
+			
+			if (result) {
+				String url = "redirect:bulletin_board_detail_page.do?post_index=" + post_index + "&post_writter_id=" + (String) request.getSession().getAttribute("user_id");
+				mv = new ModelAndView(url);
+				
+			} else {
+				mv = new ModelAndView("redirect:bulletin_board_main_page.do");
+				redirectAttributes.addFlashAttribute("post_update_message", "post_update_fail");
+			}
 		}
 		
 		return mv;

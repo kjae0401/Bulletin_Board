@@ -36,50 +36,40 @@
 			var change_input_pwd = $('input[name=change_input_pwd]')
 			var change_input_pwd_check = $('input[name=change_input_pwd_check]')
 			var user_id = $('input[name=user_id]')
-			var regex = /^[A-Za-z0-9+]{8,16}$/
 			
-			if (change_current_pwd.val() == "") {
-				alert('필수 입력 정보를 입력해주세요.')
-				change_current_pwd.focus()
-			} else {
-				if (change_input_pwd.val() == "") {
-					alert('필수 입력 정보를 입력해주세요.')
-					change_input_pwd.focus()
-				} else {
-					if (change_input_pwd_check.val() == "") {
+			$.ajax({
+				url : "/Bulletin_Board/change_pwd_page_action.do",
+				type : "post",
+				data : {"change_current_pwd" : change_current_pwd.val(), "change_input_pwd" : change_input_pwd.val(), "change_input_pwd_check" : change_input_pwd_check.val(),"user_id" : user_id.val()},
+				dataType : "html",
+				async:false,
+				success : function(result) {
+					if (result == 'success') {
+						alert('비밀번호를 변경하였습니다.')
+						location.reload()
+					} else if (result == 'pwd_fail') {
+						change_current_pwd.focus()
+						alert('비밀번호를 다시 확인하여주세요.')
+					} else if (result == 'fail') {
+						alert('비밀번호 변경에 실패하였습니다. 다시 시도해주세요.')
+					} else if (result == 'change_current_pwd empty') {
+						alert('필수 입력 정보를 입력해주세요.')
+						change_current_pwd.focus()
+					} else if (result == 'change_input_pwd emtpy') {
+						alert('필수 입력 정보를 입력해주세요.')
+						change_input_pwd.focus()
+					} else if (result == 'change_input_pwd_check empty') {
 						alert('필수 입력 정보를 입력해주세요.')
 						change_input_pwd_check.focus()
-					} else {
-						if (!regex.test(change_input_pwd.val())) {
-							alert('8~16자의 영문 대 소문자, 숫자만 사용 가능합니다.')
-							change_input_pwd.focus()
-						} else {
-							if (change_input_pwd.val() != change_input_pwd_check.val()) {
-								alert('비밀번호가 일치하지 않습니다.')
-								change_input_pwd_check.focus()
-							} else {
-								$.ajax({
-									url : "/Bulletin_Board/change_pwd_page_action.do",
-									type : "post",
-									data : {"change_current_pwd" : change_current_pwd.val(), "change_input_pwd" : change_input_pwd.val(), "user_id" : user_id.val()},
-									dataType : "html",
-									async:false,
-									success : function(data) {
-										if (data == 'success') {
-											alert('비밀번호를 변경하였습니다.')
-											location.reload()
-										} else if (data == 'pwd_fail') {
-											alert('비밀번호를 다시 확인하여주세요.')
-										} else {
-											alert('비밀번호 변경에 실패하였습니다. 다시 시도해주세요.')
-										}
-									}
-								})
-							}
-						}
+					} else if (result == 'change_input_pwd pattern error') {
+						alert('8~16자의 영문 대 소문자, 숫자만 사용 가능합니다.')
+						change_input_pwd.focus()
+					} else if (result == 'change_input_pwd not equals') {
+						alert('비밀번호가 일치하지 않습니다.')
+						change_input_pwd_check.focus()
 					}
 				}
-			}
+			})
 			
 			return false
 		}

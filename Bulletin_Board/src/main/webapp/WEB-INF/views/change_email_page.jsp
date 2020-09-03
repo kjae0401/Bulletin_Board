@@ -37,15 +37,14 @@
 				alert('필수 입력 정보를 입력해주세요.')
 				change_input_email.focus()
 			} else {
-				
 				$.ajax({
 					url : "/Bulletin_Board/change_email_page_action.do",
 					type : "post",
 					data : {"user_id" : user_id.val(), "change_input_email" : change_input_email.val()},
 					dataType : "html",
 					async:false,
-					success : function(data) {
-						if (data == 'success') {
+					success : function(result) {
+						if (result == 'success') {
 							alert('이메일을 변경하였습니다.')
 							location.reload()
 						} else {
